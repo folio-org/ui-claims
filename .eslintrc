@@ -1,0 +1,16 @@
+{
+  "extends": "@folio/eslint-config-stripes/acquisitions",
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "overrides": [
+    {
+      "files": [ "src/**/tests/*", "test/**/*" ],
+      "rules": {
+        "react/prop-types": "off"
+      }
+    }
+  ],
+  "env": {
+    "jest": true
+  }
+}
