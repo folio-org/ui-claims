@@ -73,6 +73,13 @@
     ],
     "displayName": "ui-claims.meta.title",
     "route": "/claiming",
+    "icons": [
+      {
+        "name": "app",
+        "alt": "Create, view and manage claims",
+        "title": "Claiming"
+      }
+    ],
     "okapiInterfaces": {},
     "permissionSets": [
       {
