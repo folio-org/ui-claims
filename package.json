@@ -1,5 +1,5 @@
 {
-  "name": "@folio/ui-claims",
+  "name": "@folio/claims",
   "version": "1.0.0",
   "description": "UI module for claiming",
   "main": "src/index.tsx",
@@ -54,7 +54,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@folio/stripes-acq-components": "^5.1.0"
+    "@folio/stripes-acq-components": "^6.0.0"
   },
   "peerDependencies": {
     "@folio/stripes": "^9.2.0",
