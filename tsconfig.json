@@ -1,0 +1,3 @@
+{
+  "extends": "@folio/stripes-webpack/webpack/tsconfig.json",
+}
