@@ -4,6 +4,9 @@
   "description": "UI module for claiming",
   "main": "src/index.tsx",
   "repository": "",
+  "publishConfig": {
+    "registry": "https://repository.folio.org/repository/npm-folio/"
+  },
   "license": "Apache-2.0",
   "scripts": {
     "start": "stripes serve",
