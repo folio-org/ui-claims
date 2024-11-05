@@ -6,12 +6,23 @@
   "appMenu.claimingAppSearch": "Claiming app Search",
 
   "search.index.keyword": "Keyword",
-  "search.index.title": "Title (Receiving titles)",
-  "search.index.poLine.titleOrPackage": "Package (POL Package name)",
-  "search.index.productIds": "Product ID (For the specific title or the package)",
-  "search.index.purchaseOrder.poNumber": "PO number",
-  "search.index.poLine.poLineNumber": "POL number",
-  "search.index.poLine.vendorDetail.referenceNumbers": "Vendor reference number",
+  "search.index.titles.title": "Title (Receiving titles)",
+  "search.index.titles.poLine.titleOrPackage": "Package (POL Package name)",
+  "search.index.titles.productIds": "Product ID (For the specific title or the package)",
+  "search.index.titles.purchaseOrder.poNumber": "PO number",
+  "search.index.titles.poLine.poLineNumber": "POL number",
+  "search.index.titles.poLine.vendorDetail.referenceNumbers": "Vendor reference number",
+
+  "claiming.results.title": "Claiming",
+  "claiming.results.columns.receiptDate": "Expected date",
+  "claiming.results.columns.vendorCode": "Organization name",
+  "claiming.results.columns.vendorName": "Organization code",
+  "claiming.results.columns.title": "Title",
+  "claiming.results.columns.displaySummary": "Display summary",
+  "claiming.results.columns.chronology": "Chronology",
+  "claiming.results.columns.enumeration": "Enumeration",
+  "claiming.results.columns.poLineNumber": "POL number",
+  "claiming.results.columns.piecesToClaim": "Pieces to claim",
   
   "permission.claiming.view": "Claims: View claiming"
 }

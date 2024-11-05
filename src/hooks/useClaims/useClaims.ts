@@ -9,18 +9,16 @@ import {
 } from '@folio/stripes/core';
 import { LIMIT_MAX } from '@folio/stripes-acq-components';
 
-import {
-  ALL_RECORDS_CQL,
-  CLAIMS_API,
-} from '../../constants';
+import { ALL_RECORDS_CQL } from '../../constants';
+import { fetchClaims } from '../../utils';
 
 interface Params extends Partial<Pagination> {
   query?: string;
 }
 
 interface Options extends QueryObserverOptions {
+  breakWithDefaults?: boolean;
   tenantId?: string;
-  keepPreviousData?: boolean;
 }
 
 interface Data {
@@ -28,9 +26,17 @@ interface Data {
   totalRecords: number;
 }
 
+interface ReturnData {
+  claims: ACQ.Claim[];
+  totalRecords: number;
+  isFetching: boolean;
+  isLoading: boolean;
+  refetch: () => void;
+}
+
 const DEFAULT_DATA: ACQ.Claim[] = [];
 
-export const useClaims = (params: Params = {}, options: Options = {}) => {
+export const useClaims = (params: Params = {}, options: Options = {}): ReturnData => {
   const {
     query = ALL_RECORDS_CQL,
     offset = 0,
@@ -38,10 +44,11 @@ export const useClaims = (params: Params = {}, options: Options = {}) => {
   } = params;
 
   const {
+    breakWithDefaults = false,
     enabled = true,
     keepPreviousData,
-    tenantId,
     queryKey,
+    tenantId,
   } = options;
 
   const searchParams = {
@@ -59,9 +66,16 @@ export const useClaims = (params: Params = {}, options: Options = {}) => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: [namespace, queryKey, query, offset, limit, tenantId],
+    queryKey: [namespace, queryKey, query, offset, limit, tenantId, breakWithDefaults],
     queryFn: async ({ signal }) => {
-      return ky.get(CLAIMS_API, { searchParams, signal }).json<Data>();
+      if (breakWithDefaults) {
+        return {
+          pieces: DEFAULT_DATA,
+          totalRecords: 0,
+        };
+      }
+
+      return fetchClaims<Data>(ky)({ searchParams, signal });
     },
     enabled,
     keepPreviousData,

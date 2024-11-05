@@ -18,6 +18,8 @@ import {
 import { CLAIMING_LIST_COLUMN_MAPPING } from '../../constants';
 import { getResultsListFormatter } from './getResultsListFormatter';
 
+import type { ClaimingListColumn } from '../../types';
+
 interface Props {
   contentData: ACQ.Claim[];
   isEmptyMessage: React.ReactNode;
@@ -27,9 +29,9 @@ interface Props {
   onNeedMoreData: () => void;
   pagination: Pagination;
   sortDirection?: 'ascending' | 'descending';
-  sortingField?: keyof ACQ.Claim;
+  sortingField?: ClaimingListColumn;
   totalCount: number;
-  visibleColumns: (keyof ACQ.Claim)[];
+  visibleColumns: ClaimingListColumn[];
   width: number;
 }
 
@@ -69,8 +71,8 @@ const ClaimingList: React.FC<Props> = ({
         contentData={contentData}
         totalCount={totalCount}
         visibleColumns={visibleColumns}
-        columnMapping={CLAIMING_LIST_COLUMN_MAPPING}
-        formatter={formatter}
+        columnMapping={CLAIMING_LIST_COLUMN_MAPPING as Record<keyof ACQ.Claim, React.ReactNode>}
+        formatter={formatter as Record<keyof ACQ.Claim, (item: ACQ.Claim) => React.ReactNode>}
         loading={isLoading}
         onNeedMoreData={onNeedMoreData}
         sortedColumn={sortingField}

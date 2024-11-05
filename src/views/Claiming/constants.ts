@@ -1,22 +1,26 @@
 import React from 'react';
 
-// TODO: move reusable to stripes-acq-components;
-
 import { ORDER_FORMATS } from '@folio/stripes-acq-components';
 
-export const CLAIM_FIELDS = {
-  id: 'id',
+import type { ClaimingListColumn } from './types';
+
+export const CLAIMING_LIST_COLUMNS = {
+  receiptDate: 'receiptDate',
+  vendorCode: 'vendorCode',
+  vendorName: 'vendorName',
   receivingStatus: 'receivingStatus',
   title: 'title',
-  expectedReceiptDate: 'poLine.physical.expectedReceiptDate',
-};
+  displaySummary: 'displaySummary',
+  chronology: 'chronology',
+  enumeration: 'enumeration',
+  poLineNumber: 'poLineNumber',
+  piecesToClaim: 'piecesToClaim',
+} as const;
 
 export const CLAIMING_LIST_SORTABLE_FIELDS: (keyof ACQ.Claim)[] = [];
-export const CLAIMING_LIST_COLUMN_MAPPING = {
-  [CLAIM_FIELDS.receivingStatus]: 'receivingStatus',
-  [CLAIM_FIELDS.title]: 'title',
-  [CLAIM_FIELDS.expectedReceiptDate]: 'expectedReceiptDate',
-} as Record<keyof ACQ.Claim, React.ReactNode>;
+export const CLAIMING_LIST_COLUMN_MAPPING = Object.values(CLAIMING_LIST_COLUMNS).reduce((acc, column) => {
+  return { ...acc, [column]: column };
+}, {} as Record<ClaimingListColumn, React.ReactNode>);
 
 export const FILTERS = {
   ACQUISITIONS_UNIT: 'purchaseOrder.acqUnitIds',

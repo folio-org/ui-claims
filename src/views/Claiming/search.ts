@@ -19,13 +19,14 @@ import {
 
 import type { ActiveFilters } from './types';
 
+// TODO: investigate why it's not searchable
 export const CLAIMING_SEARCHABLE_INDICES = [
-  'title',
-  'poLine.titleOrPackage',
-  'productIds',
-  'purchaseOrder.poNumber',
-  'poLine.poLineNumber',
-  'poLine.vendorDetail.referenceNumbers',
+  'titles.title', // +
+  'titles.poLine.titleOrPackage',
+  'titles.productIds', // +
+  'titles.purchaseOrder.poNumber',
+  'titles.poLine.poLineNumber',
+  'titles.poLine.vendorDetail.referenceNumbers',
 ];
 
 export const getKeywordQuery = (query: string): string => CLAIMING_SEARCHABLE_INDICES.reduce(

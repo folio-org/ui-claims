@@ -41,6 +41,8 @@ import {
 import { useClaiming } from './hooks';
 import { CLAIMING_SEARCHABLE_INDICES } from './search';
 
+import type { ClaimingListColumn } from './types';
+
 const resetData = noop;
 
 const SEARCH_INDICES = [
@@ -51,7 +53,7 @@ const SEARCH_INDICES = [
   ...CLAIMING_SEARCHABLE_INDICES.map(index => ({ labelId: `ui-claims.search.index.${index}`, value: index })),
 ];
 
-export const Claiming = (): React.JSX.Element => {
+export const Claiming: React.FC = () => {
   const intl = useIntl();
   const history = useHistory();
   const location = useLocation();
@@ -157,7 +159,7 @@ export const Claiming = (): React.JSX.Element => {
         <ResultsPane
           id="claiming-results-pane"
           autosize
-          title={intl.formatMessage({ id: 'ui-claims.meta.title' })}
+          title={intl.formatMessage({ id: 'ui-claims.claiming.results.title' })}
           renderActionMenu={renderActionMenu}
           count={totalRecords}
           toggleFiltersPane={toggleFilters}
@@ -177,7 +179,7 @@ export const Claiming = (): React.JSX.Element => {
               sortDirection={sortingDirection}
               sortingField={sortingField}
               totalCount={totalRecords}
-              visibleColumns={visibleColumns as (keyof ACQ.Claim)[]}
+              visibleColumns={visibleColumns as ClaimingListColumn[]}
               width={width}
             />
           ))}

@@ -1,3 +1,5 @@
+import { dayjs } from '@folio/stripes/components';
+import { useStripes } from '@folio/stripes/core';
 import { getFiltersCount } from '@folio/stripes-acq-components';
 
 import { useClaims } from '../../../../hooks';
@@ -17,16 +19,18 @@ export const useClaiming = ({
   sorting,
   pagination,
   tenantId,
-}: Options) => {
+}: Options): ReturnType<typeof useClaims> => {
+  const { timezone } = useStripes();
+
   const filtersCount = getFiltersCount(filters);
 
-  // moment.tz.setDefault(timezone);
+  console.log('filters', filters);
+
+  dayjs.tz.setDefault(timezone as string);
 
   const query = buildClaimingQuery(filters);
 
-  console.log('query', query);
-
-  // moment.tz.setDefault();
+  dayjs.tz.setDefault();
 
   const data = useClaims(
     {
@@ -35,6 +39,7 @@ export const useClaiming = ({
       query,
     },
     {
+      breakWithDefaults: !filtersCount,
       keepPreviousData: true,
       tenantId,
     },
