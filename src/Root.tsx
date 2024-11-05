@@ -23,6 +23,8 @@ import {
 import { CLAIMING_ROUTE } from './constants';
 import { RootRoutes } from './RootRoutes';
 
+import './typing';
+
 const Root: React.FC = () => {
   const [isOpen, toggleModal] = useModalToggle();
 

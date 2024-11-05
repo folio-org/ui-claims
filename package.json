@@ -67,9 +67,6 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
   },
-  "stripesDeps": [
-    "@folio/stripes-acq-components"
-  ],
   "stripes": {
     "actsAs": [
       "app"
@@ -82,6 +79,9 @@
         "alt": "Create, view and manage claims",
         "title": "Claiming"
       }
+    ],
+    "stripesDeps": [
+      "@folio/stripes-acq-components"
     ],
     "okapiInterfaces": {},
     "permissionSets": [

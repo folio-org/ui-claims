@@ -30,7 +30,6 @@ import {
   usePagination,
 } from '@folio/stripes-acq-components';
 
-import { useClaims } from '../../hooks';
 import {
   ClaimingList,
   ClaimingListFilters,
@@ -39,6 +38,7 @@ import {
   CLAIMING_LIST_COLUMN_MAPPING,
   CLAIMING_LIST_SORTABLE_FIELDS,
 } from './constants';
+import { useClaiming } from './hooks';
 import { CLAIMING_SEARCHABLE_INDICES } from './search';
 
 const resetData = noop;
@@ -89,9 +89,13 @@ export const Claiming = (): React.JSX.Element => {
 
   const {
     claims,
-    isLoading,
+    isFetching,
     totalRecords,
-  } = useClaims();
+  } = useClaiming({
+    filters,
+    pagination,
+    sorting: { field: sortingField, order: sortingDirection },
+  });
 
   const renderActionMenu = ({ onToggle }: { onToggle: (key: string) => void }) => {
     return (
@@ -106,7 +110,7 @@ export const Claiming = (): React.JSX.Element => {
 
   const resultsStatusMessage = (
     <NoResultsMessage
-      isLoading={isLoading}
+      isLoading={isFetching}
       filters={filters}
       isFiltersOpened={isFiltersOpened}
       toggleFilters={toggleFilters}
@@ -129,7 +133,7 @@ export const Claiming = (): React.JSX.Element => {
               applySearch={applySearch}
               changeSearch={changeSearch}
               searchQuery={searchQuery}
-              isLoading={isLoading}
+              isLoading={isFetching}
               ariaLabelId="ui-claims.titles.search"
               searchableIndexes={SEARCH_INDICES}
               changeSearchIndex={changeIndex}
@@ -139,13 +143,13 @@ export const Claiming = (): React.JSX.Element => {
             <ResetButton
               id="reset-receiving-filters"
               reset={resetFilters}
-              disabled={!location.search || isLoading}
+              disabled={!location.search || isFetching}
             />
 
             <ClaimingListFilters
               activeFilters={filters}
               applyFilters={applyFilters}
-              disabled={isLoading}
+              disabled={isFetching}
             />
           </FiltersPane>
         )}
@@ -153,20 +157,20 @@ export const Claiming = (): React.JSX.Element => {
         <ResultsPane
           id="claiming-results-pane"
           autosize
-          title={intl.formatMessage({ id: 'ui-claims.claimingList.title' })}
+          title={intl.formatMessage({ id: 'ui-claims.meta.title' })}
           renderActionMenu={renderActionMenu}
           count={totalRecords}
           toggleFiltersPane={toggleFilters}
           filters={filters}
           isFiltersOpened={isFiltersOpened}
-          isLoading={isLoading}
+          isLoading={isFetching}
         >
           {(({ height, width }: Dimensions) => (
             <ClaimingList
               contentData={claims}
               height={height}
               isEmptyMessage={resultsStatusMessage}
-              isLoading={isLoading}
+              isLoading={isFetching}
               onHeaderClick={changeSorting}
               onNeedMoreData={changePage}
               pagination={pagination}

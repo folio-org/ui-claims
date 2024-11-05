@@ -1,1 +1,0 @@
-export { useClaimsSearch } from './useClaimsSearch';

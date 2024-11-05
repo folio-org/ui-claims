@@ -7,10 +7,12 @@ import {
   useNamespace,
   useOkapiKy,
 } from '@folio/stripes/core';
+import { LIMIT_MAX } from '@folio/stripes-acq-components';
+
 import {
-  ORDER_PIECES_API,
-  RESULT_COUNT_INCREMENT,
-} from '@folio/stripes-acq-components';
+  ALL_RECORDS_CQL,
+  CLAIMS_API,
+} from '../../constants';
 
 interface Params extends Partial<Pagination> {
   query?: string;
@@ -30,15 +32,16 @@ const DEFAULT_DATA: ACQ.Claim[] = [];
 
 export const useClaims = (params: Params = {}, options: Options = {}) => {
   const {
-    query = '',
+    query = ALL_RECORDS_CQL,
     offset = 0,
-    limit = RESULT_COUNT_INCREMENT,
+    limit = LIMIT_MAX,
   } = params;
 
   const {
     enabled = true,
     keepPreviousData,
     tenantId,
+    queryKey,
   } = options;
 
   const searchParams = {
@@ -56,9 +59,9 @@ export const useClaims = (params: Params = {}, options: Options = {}) => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: [namespace, query, offset, limit, tenantId],
+    queryKey: [namespace, queryKey, query, offset, limit, tenantId],
     queryFn: async ({ signal }) => {
-      return ky.get(ORDER_PIECES_API, { searchParams, signal }).json<Data>();
+      return ky.get(CLAIMS_API, { searchParams, signal }).json<Data>();
     },
     enabled,
     keepPreviousData,

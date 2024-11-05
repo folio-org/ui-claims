@@ -10,12 +10,19 @@ declare namespace ACQ {
   }
 }
 
+interface Dimensions {
+  height: number;
+  width: number;
+}
+
+type FilterValue = string | string[];
+
 interface Pagination {
   limit: number;
   offset: number;
 }
 
-interface Dimensions {
-  height: number;
-  width: number;
-}
+type Sorting = {
+  field: string;
+  order: 'ascending' | 'descending';
+};
