@@ -90,7 +90,7 @@ export const Claiming: React.FC = () => {
   }, []);
 
   const selectOne = useCallback(() => {
-
+    console.log('one selected');
   }, []);
 
   const columnMapping = useMemo(() => getResultsListColumnMapping({ intl, selectAll }), [intl, selectAll]);

@@ -1,7 +1,5 @@
 import { ORDER_FORMATS } from '@folio/stripes-acq-components';
 
-import type { ClaimingListColumn } from './types';
-
 export const CLAIMING_LIST_COLUMNS = {
   select: 'select',
   receiptDate: 'receiptDate',
@@ -16,7 +14,10 @@ export const CLAIMING_LIST_COLUMNS = {
   piecesToClaim: 'piecesToClaim',
 } as const;
 
-export const CLAIMING_LIST_SORTABLE_FIELDS: ClaimingListColumn[] = [];
+export const CLAIMING_LIST_SORTABLE_FIELDS = [
+  CLAIMING_LIST_COLUMNS.receiptDate,
+  CLAIMING_LIST_COLUMNS.title,
+] as const;
 
 export const FILTERS = {
   ACQUISITIONS_UNIT: 'purchaseOrder.acqUnitIds',

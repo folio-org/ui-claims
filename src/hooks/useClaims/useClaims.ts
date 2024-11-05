@@ -21,11 +21,6 @@ interface Options extends QueryObserverOptions {
   tenantId?: string;
 }
 
-interface Data {
-  pieces: ACQ.Claim[];
-  totalRecords: number;
-}
-
 interface ReturnData {
   claims: ACQ.Claim[];
   totalRecords: number;
@@ -70,19 +65,19 @@ export const useClaims = (params: Params = {}, options: Options = {}): ReturnDat
     queryFn: async ({ signal }) => {
       if (breakWithDefaults) {
         return {
-          pieces: DEFAULT_DATA,
+          claims: DEFAULT_DATA,
           totalRecords: 0,
         };
       }
 
-      return fetchClaims<Data>(ky)({ searchParams, signal });
+      return fetchClaims(ky)({ searchParams, signal });
     },
     enabled,
     keepPreviousData,
   });
 
   return {
-    claims: data?.pieces || DEFAULT_DATA,
+    claims: data?.claims || DEFAULT_DATA,
     totalRecords: data?.totalRecords || 0,
     isFetching,
     isLoading,

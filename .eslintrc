@@ -6,6 +6,7 @@
     {
       "files": [ "src/**/tests/*", "test/**/*" ],
       "rules": {
+        "@typescript-eslint/triple-slash-reference": "off",
         "react/prop-types": "off"
       }
     }

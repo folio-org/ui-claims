@@ -16,6 +16,7 @@ import {
   useItemToView,
 } from '@folio/stripes-acq-components';
 
+import { CLAIMING_LIST_COLUMNS } from '../../constants';
 import { getResultsListFormatter } from '../../utils';
 
 import type {
@@ -23,18 +24,20 @@ import type {
   ClaimingListColumnMapping,
 } from '../../types';
 
+type Claim = ACQ.Claim;
+
 interface Props {
   columnMapping: ClaimingListColumnMapping;
-  contentData: ACQ.Claim[];
+  contentData: Claim[];
   isEmptyMessage: React.ReactNode;
   isLoading: boolean;
   height: number;
   onHeaderClick: () => void;
   onNeedMoreData: () => void;
-  onSelect: (item: ACQ.Claim) => void;
+  onSelect: (item: Claim) => void;
   pagination: Pagination;
   sortDirection?: SortingOrder;
-  sortingField?: keyof ACQ.Claim;
+  sortingField?: keyof Claim;
   totalCount: number;
   visibleColumns: ClaimingListColumn[];
   width: number;
@@ -66,7 +69,7 @@ const ClaimingList: React.FC<Props> = ({
     matchPath<{ id?: string }>(location.pathname, { path: `${match.path}/:id/view` })
   ), [location.pathname, match.path]);
 
-  const isRowSelected = useCallback(({ item }: { item: ACQ.Claim }) => {
+  const isRowSelected = useCallback(({ item }: { item: Claim }) => {
     return urlParams ? (urlParams.params.id === item.id) : false;
   }, [urlParams]);
 
@@ -78,9 +81,9 @@ const ClaimingList: React.FC<Props> = ({
         id="claiming-list"
         contentData={contentData}
         totalCount={totalCount}
-        visibleColumns={visibleColumns as (keyof ACQ.Claim)[]}
-        columnMapping={columnMapping as unknown as Record<keyof ACQ.Claim, React.ReactNode>}
-        formatter={formatter as Record<keyof ACQ.Claim, (item: ACQ.Claim) => React.ReactNode>}
+        visibleColumns={visibleColumns as (keyof Claim)[]}
+        columnMapping={columnMapping as unknown as Record<keyof Claim, React.ReactNode>}
+        formatter={formatter as Record<keyof Claim, (item: Claim) => React.ReactNode>}
         loading={isLoading}
         onNeedMoreData={onNeedMoreData}
         sortedColumn={sortingField}
@@ -96,6 +99,7 @@ const ClaimingList: React.FC<Props> = ({
         onMarkReset={deleteItemToView}
         pagingType={'none' as 'click'}
         stickyFirstColumn
+        columnWidths={{ [CLAIMING_LIST_COLUMNS.select as keyof Claim]: '34px' }}
       />
 
       {contentData.length > 0 && (

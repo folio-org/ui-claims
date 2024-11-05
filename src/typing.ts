@@ -5,4 +5,5 @@
 import { useOkapiKy } from '@folio/stripes/core';
 
 export type HTTPClient = ReturnType<typeof useOkapiKy>;
-export type HTTPClientOptions = HTTPClient extends (url: infer I, options: infer O) => unknown ? O : never;
+export type HTTPClientOptions = Parameters<HTTPClient['extend']>[0];
+export type HTTPClientSearchParams = HTTPClientOptions extends { searchParams?: infer S } ? S : never;

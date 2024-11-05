@@ -1,1 +1,1 @@
-export { fetchClaims } from './fetchClaims';
+export * from './api';
