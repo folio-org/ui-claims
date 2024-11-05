@@ -1,5 +1,8 @@
 import noop from 'lodash/noop';
-import React from 'react';
+import React, {
+  useCallback,
+  useMemo,
+} from 'react';
 import { useIntl } from 'react-intl';
 import {
   useHistory,
@@ -35,11 +38,12 @@ import {
   ClaimingListFilters,
 } from './components';
 import {
-  CLAIMING_LIST_COLUMN_MAPPING,
+  CLAIMING_LIST_COLUMNS,
   CLAIMING_LIST_SORTABLE_FIELDS,
 } from './constants';
 import { useClaiming } from './hooks';
 import { CLAIMING_SEARCHABLE_INDICES } from './search';
+import { getResultsListColumnMapping } from './utils';
 
 import type { ClaimingListColumn } from './types';
 
@@ -81,10 +85,20 @@ export const Claiming: React.FC = () => {
 
   useFiltersReset(resetFilters);
 
+  const selectAll = useCallback(() => {
+    console.log('all selected');
+  }, []);
+
+  const selectOne = useCallback(() => {
+
+  }, []);
+
+  const columnMapping = useMemo(() => getResultsListColumnMapping({ intl, selectAll }), [intl, selectAll]);
+
   const {
     toggleColumn,
     visibleColumns,
-  } = useColumnManager('claiming-list', CLAIMING_LIST_COLUMN_MAPPING);
+  } = useColumnManager('claiming-list', columnMapping);
 
   const queryFilter = filters?.[SEARCH_PARAMETER];
   const pageTitle = queryFilter ? intl.formatMessage({ id: 'ui-claims.document.title.search' }, { query: queryFilter }) : null;
@@ -102,10 +116,11 @@ export const Claiming: React.FC = () => {
   const renderActionMenu = ({ onToggle }: { onToggle: (key: string) => void }) => {
     return (
       <ColumnManagerMenu
-        prefix="orders"
-        columnMapping={CLAIMING_LIST_COLUMN_MAPPING}
+        prefix="claiming"
+        columnMapping={columnMapping}
         visibleColumns={visibleColumns}
         toggleColumn={toggleColumn}
+        excludeColumns={[CLAIMING_LIST_COLUMNS.select]}
       />
     );
   };
@@ -169,12 +184,14 @@ export const Claiming: React.FC = () => {
         >
           {(({ height, width }: Dimensions) => (
             <ClaimingList
+              columnMapping={columnMapping}
               contentData={claims}
               height={height}
               isEmptyMessage={resultsStatusMessage}
               isLoading={isFetching}
               onHeaderClick={changeSorting}
               onNeedMoreData={changePage}
+              onSelect={selectOne}
               pagination={pagination}
               sortDirection={sortingDirection}
               sortingField={sortingField}

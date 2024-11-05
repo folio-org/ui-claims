@@ -1,10 +1,9 @@
-import React from 'react';
-
 import { ORDER_FORMATS } from '@folio/stripes-acq-components';
 
 import type { ClaimingListColumn } from './types';
 
 export const CLAIMING_LIST_COLUMNS = {
+  select: 'select',
   receiptDate: 'receiptDate',
   vendorCode: 'vendorCode',
   vendorName: 'vendorName',
@@ -17,10 +16,7 @@ export const CLAIMING_LIST_COLUMNS = {
   piecesToClaim: 'piecesToClaim',
 } as const;
 
-export const CLAIMING_LIST_SORTABLE_FIELDS: (keyof ACQ.Claim)[] = [];
-export const CLAIMING_LIST_COLUMN_MAPPING = Object.values(CLAIMING_LIST_COLUMNS).reduce((acc, column) => {
-  return { ...acc, [column]: column };
-}, {} as Record<ClaimingListColumn, React.ReactNode>);
+export const CLAIMING_LIST_SORTABLE_FIELDS: ClaimingListColumn[] = [];
 
 export const FILTERS = {
   ACQUISITIONS_UNIT: 'purchaseOrder.acqUnitIds',

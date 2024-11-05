@@ -22,6 +22,7 @@
   "claiming.results.columns.chronology": "Chronology",
   "claiming.results.columns.enumeration": "Enumeration",
   "claiming.results.columns.poLineNumber": "POL number",
+  "claiming.results.columns.receivingStatus": "Status",
   "claiming.results.columns.piecesToClaim": "Pieces to claim",
   
   "permission.claiming.view": "Claims: View claiming"

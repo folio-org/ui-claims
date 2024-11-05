@@ -92,10 +92,12 @@ interface Pagination {
   offset: number;
 }
 
-type Sorting = {
+type SortingOrder = 'ascending' | 'descending';
+
+interface Sorting {
   field: string;
-  order: 'ascending' | 'descending';
-};
+  order: SortingOrder;
+}
 
 interface Metadata {
   createdDate: string;

@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
+import { useIntl } from 'react-intl';
 import {
   matchPath,
   useLocation,
@@ -15,33 +16,39 @@ import {
   useItemToView,
 } from '@folio/stripes-acq-components';
 
-import { CLAIMING_LIST_COLUMN_MAPPING } from '../../constants';
-import { getResultsListFormatter } from './getResultsListFormatter';
+import { getResultsListFormatter } from '../../utils';
 
-import type { ClaimingListColumn } from '../../types';
+import type {
+  ClaimingListColumn,
+  ClaimingListColumnMapping,
+} from '../../types';
 
 interface Props {
+  columnMapping: ClaimingListColumnMapping;
   contentData: ACQ.Claim[];
   isEmptyMessage: React.ReactNode;
   isLoading: boolean;
   height: number;
   onHeaderClick: () => void;
   onNeedMoreData: () => void;
+  onSelect: (item: ACQ.Claim) => void;
   pagination: Pagination;
-  sortDirection?: 'ascending' | 'descending';
-  sortingField?: ClaimingListColumn;
+  sortDirection?: SortingOrder;
+  sortingField?: keyof ACQ.Claim;
   totalCount: number;
   visibleColumns: ClaimingListColumn[];
   width: number;
 }
 
 const ClaimingList: React.FC<Props> = ({
+  columnMapping,
   contentData,
   height,
   isEmptyMessage,
   isLoading,
   onHeaderClick,
   onNeedMoreData,
+  onSelect,
   pagination,
   sortDirection,
   sortingField,
@@ -49,6 +56,7 @@ const ClaimingList: React.FC<Props> = ({
   visibleColumns,
   width,
 }) => {
+  const intl = useIntl();
   const location = useLocation();
   const match = useRouteMatch();
 
@@ -62,7 +70,7 @@ const ClaimingList: React.FC<Props> = ({
     return urlParams ? (urlParams.params.id === item.id) : false;
   }, [urlParams]);
 
-  const formatter = useMemo(() => getResultsListFormatter(), []);
+  const formatter = useMemo(() => getResultsListFormatter({ intl, onSelect }), [intl, onSelect]);
 
   return (
     <>
@@ -70,8 +78,8 @@ const ClaimingList: React.FC<Props> = ({
         id="claiming-list"
         contentData={contentData}
         totalCount={totalCount}
-        visibleColumns={visibleColumns}
-        columnMapping={CLAIMING_LIST_COLUMN_MAPPING as Record<keyof ACQ.Claim, React.ReactNode>}
+        visibleColumns={visibleColumns as (keyof ACQ.Claim)[]}
+        columnMapping={columnMapping as unknown as Record<keyof ACQ.Claim, React.ReactNode>}
         formatter={formatter as Record<keyof ACQ.Claim, (item: ACQ.Claim) => React.ReactNode>}
         loading={isLoading}
         onNeedMoreData={onNeedMoreData}
@@ -87,6 +95,7 @@ const ClaimingList: React.FC<Props> = ({
         onMarkPosition={setItemToView}
         onMarkReset={deleteItemToView}
         pagingType={'none' as 'click'}
+        stickyFirstColumn
       />
 
       {contentData.length > 0 && (
