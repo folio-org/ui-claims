@@ -1,3 +1,4 @@
+import difference from 'lodash/difference';
 import React, {
   memo,
   useCallback,
@@ -16,7 +17,10 @@ import {
   useItemToView,
 } from '@folio/stripes-acq-components';
 
-import { CLAIMING_LIST_COLUMNS } from '../../constants';
+import {
+  CLAIMING_LIST_COLUMNS,
+  CLAIMING_LIST_SORTABLE_FIELDS,
+} from '../../constants';
 import { getResultsListFormatter } from '../../utils';
 
 import type {
@@ -25,6 +29,11 @@ import type {
 } from '../../types';
 
 type Claim = ACQ.Claim;
+
+const nonInteractiveHeaders = difference(
+  Object.values(CLAIMING_LIST_COLUMNS),
+  Object.values(CLAIMING_LIST_SORTABLE_FIELDS),
+);
 
 interface Props {
   columnMapping: ClaimingListColumnMapping;
@@ -100,6 +109,7 @@ const ClaimingList: React.FC<Props> = ({
         pagingType={'none' as 'click'}
         stickyFirstColumn
         columnWidths={{ [CLAIMING_LIST_COLUMNS.select as keyof Claim]: '34px' }}
+        nonInteractiveHeaders={nonInteractiveHeaders as (keyof Claim)[]}
       />
 
       {contentData.length > 0 && (

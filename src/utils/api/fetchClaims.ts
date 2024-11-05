@@ -1,3 +1,5 @@
+import keyBy from 'lodash/keyBy';
+
 import type {
   HTTPClient,
   HTTPClientOptions,
@@ -33,20 +35,24 @@ export const fetchClaims = (httpClient: HTTPClient) => async (options: HTTPClien
   const organizationIdsSet = new Set(purchaseOrders.map(({ vendor }) => vendor));
   const { organizations } = await fetchOrganizationsByIds(httpClient)(Array.from(organizationIdsSet), { signal });
 
-  console.log('poLines', poLines);
-  console.log('titles', titles);
-  console.log('purchaseOrders', purchaseOrders);
-  console.log('organizations', organizations);
+  const purchaseOrdersDict = keyBy(purchaseOrders, 'id');
+  const poLinesDict = keyBy(poLines, 'id');
+  const titlesDict = keyBy(titles, 'id');
+  const organizationsDict = keyBy(organizations, 'id');
 
   return {
-    claims: pieces.map((piece) => ({
-      ...piece,
-      title: '',
-      vendorCode: '',
-      vendorName: '',
-      poLineNumber: '',
-      piecesToClaim: 0,
-    })),
+    claims: pieces.map((piece) => {
+      const vendor = organizationsDict[purchaseOrdersDict[poLinesDict[piece.poLineId].purchaseOrderId].vendor];
+
+      return {
+        ...piece,
+        title: titlesDict[piece.titleId].title,
+        vendorCode: vendor.code,
+        vendorName: vendor.name,
+        poLineNumber: poLinesDict[piece.poLineId].poLineNumber,
+        piecesToClaim: 0, // TODO: BE support is required
+      };
+    }),
     totalRecords,
   };
 };
