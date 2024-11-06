@@ -10,11 +10,13 @@ import type { ClaimingListColumnMapping } from '../types';
 interface Params {
   intl: IntlShape,
   selectAll: () => void,
+  disabled: boolean,
 }
 
 export const getResultsListColumnMapping = ({
   intl,
   selectAll,
+  disabled,
 }: Params): ClaimingListColumnMapping => {
   const mapping = Object.values(CLAIMING_LIST_COLUMNS).reduce((acc, column) => {
     return { ...acc, [column]: intl.formatMessage({ id: `ui-claims.claiming.results.columns.${column}` }) };
@@ -24,11 +26,11 @@ export const getResultsListColumnMapping = ({
     ...mapping,
     select: (
       <Checkbox
-        aria-label={intl.formatMessage({ id: 'stripes-acq-components.modal.selectAll' })}
+        aria-label={intl.formatMessage({ id: 'ui-claims.claiming.results.columns.selectAll' })}
         // checked={allRecordsSelected}
         onChange={selectAll}
         type="checkbox"
-      // disabled={isLoading}
+        disabled={disabled}
       />
     ),
   };

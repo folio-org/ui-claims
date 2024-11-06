@@ -83,6 +83,16 @@ export const Claiming: React.FC = () => {
 
   const { pagination, changePage } = usePagination({ limit: RESULT_COUNT_INCREMENT, offset: 0 });
 
+  const {
+    claims,
+    isFetching,
+    totalRecords,
+  } = useClaiming({
+    filters,
+    pagination,
+    sorting: { sorting: sortingField, sortingDirection },
+  });
+
   useFiltersReset(resetFilters);
 
   const selectAll = useCallback(() => {
@@ -93,7 +103,13 @@ export const Claiming: React.FC = () => {
     console.log('one selected');
   }, []);
 
-  const columnMapping = useMemo(() => getResultsListColumnMapping({ intl, selectAll }), [intl, selectAll]);
+  const columnMapping = useMemo(() => {
+    return getResultsListColumnMapping({
+      intl,
+      selectAll,
+      disabled: isFetching,
+    });
+  }, [intl, isFetching, selectAll]);
 
   const {
     toggleColumn,
@@ -102,16 +118,6 @@ export const Claiming: React.FC = () => {
 
   const queryFilter = filters?.[SEARCH_PARAMETER];
   const pageTitle = queryFilter ? intl.formatMessage({ id: 'ui-claims.document.title.search' }, { query: queryFilter }) : null;
-
-  const {
-    claims,
-    isFetching,
-    totalRecords,
-  } = useClaiming({
-    filters,
-    pagination,
-    sorting: { field: sortingField, order: sortingDirection },
-  });
 
   const renderActionMenu = ({ onToggle }: { onToggle: (key: string) => void }) => {
     return (

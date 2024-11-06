@@ -16,8 +16,8 @@ interface Pagination {
 type SortingOrder = 'ascending' | 'descending';
 
 interface Sorting {
-  field: string;
-  order: SortingOrder;
+  sorting: string;
+  sortingDirection: SortingOrder;
 }
 
 interface Tags {

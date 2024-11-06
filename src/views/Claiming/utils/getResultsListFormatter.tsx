@@ -17,17 +17,18 @@ type Formatter = Record<ClaimingListColumn & { select: 'select' }, (item: Claim)
 interface Params {
   intl: IntlShape;
   onSelect: (item: Claim) => void;
+  disabled: boolean;
 }
 
-export const getResultsListFormatter = ({ intl, onSelect }: Params): Formatter => {
+export const getResultsListFormatter = ({ intl, onSelect, disabled }: Params): Formatter => {
   return {
     select: (item: Claim) => (
       <Checkbox
+        aria-label={intl.formatMessage({ id: 'claiming.results.columns.select' }, { term: item.id })}
         type="checkbox"
         // checked={Boolean(selectedRecordsMap[record.id])}
         onChange={() => onSelect(item)}
-        // aria-label={intl.formatMessage({ id: 'ui-claims.claiming.results.columns.select' })}
-        // disabled={isLoading}
+        disabled={disabled}
       />
     ),
     [CLAIMING_LIST_COLUMNS.chronology]: ({ chronology }: Claim) => (chronology || <NoValue />),

@@ -19,14 +19,13 @@ import {
 
 import type { ActiveFilters } from './types';
 
-// TODO: investigate why it's not searchable
 export const CLAIMING_SEARCHABLE_INDICES = [
-  'titles.title', // +
-  'titles.poLine.titleOrPackage',
-  'titles.productIds', // +
-  'titles.purchaseOrder.poNumber',
-  'titles.poLine.poLineNumber',
-  'titles.poLine.vendorDetail.referenceNumbers',
+  'titles.title',
+  'poLine.titleOrPackage',
+  'titles.productIds',
+  'purchaseOrder.poNumber', // TODO: BE is required
+  'poLine.poLineNumber',
+  'poLine.vendorDetail.referenceNumbers',
 ];
 
 export const getKeywordQuery = (query: string): string => CLAIMING_SEARCHABLE_INDICES.reduce(
@@ -40,7 +39,8 @@ export const getKeywordQuery = (query: string): string => CLAIMING_SEARCHABLE_IN
   '',
 );
 
-export const buildClaimingQuery = (filters: ActiveFilters): string => {
+// TOOD: fix filters
+export const buildClaimingQuery = (filters: ActiveFilters, sorting: Sorting): string => {
   let materialTypeFilterQuery: string | undefined;
 
   const materialType = filters[FILTERS.MATERIAL_TYPE];
@@ -95,7 +95,12 @@ export const buildClaimingQuery = (filters: ActiveFilters): string => {
   );
 
   const filterQuery = compact([filtersFilterQuery, materialTypeFilterQuery]).join(' and ') || 'cql.allRecords=1';
-  const sortingQuery = buildSortingQuery(filters, { 'poLine.poLineNumber': 'poLineNumber' }) || 'sortby title/sort.ascending';
+  const sortingQuery = buildSortingQuery(
+    sorting,
+    {
+      // 'titles.title': 'title',
+    },
+  ) || 'sortby receiptDate/sort.ascending';
 
   return connectQuery(filterQuery, sortingQuery);
 };

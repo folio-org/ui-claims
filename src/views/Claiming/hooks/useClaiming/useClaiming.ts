@@ -24,11 +24,9 @@ export const useClaiming = ({
 
   const filtersCount = getFiltersCount(filters);
 
-  console.log('filters', filters);
-
   dayjs.tz.setDefault(timezone as string);
 
-  const query = buildClaimingQuery(filters);
+  const query = buildClaimingQuery(filters, sorting);
 
   dayjs.tz.setDefault();
 

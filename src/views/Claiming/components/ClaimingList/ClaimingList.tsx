@@ -82,7 +82,13 @@ const ClaimingList: React.FC<Props> = ({
     return urlParams ? (urlParams.params.id === item.id) : false;
   }, [urlParams]);
 
-  const formatter = useMemo(() => getResultsListFormatter({ intl, onSelect }), [intl, onSelect]);
+  const formatter = useMemo(() => {
+    return getResultsListFormatter({
+      intl,
+      onSelect,
+      disabled: isLoading,
+    });
+  }, [intl, onSelect, isLoading]);
 
   return (
     <>
