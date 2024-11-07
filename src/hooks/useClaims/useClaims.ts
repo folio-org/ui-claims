@@ -12,7 +12,7 @@ import { LIMIT_MAX } from '@folio/stripes-acq-components';
 import { ALL_RECORDS_CQL } from '../../constants';
 import { fetchClaims } from '../../utils';
 
-interface Params extends Partial<Pagination> {
+interface Params extends Partial<ACQ.Pagination> {
   query?: string;
 }
 

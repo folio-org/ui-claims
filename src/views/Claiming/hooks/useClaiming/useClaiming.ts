@@ -9,8 +9,8 @@ import type { ActiveFilters } from '../../types';
 
 interface Options {
   filters: ActiveFilters;
-  sorting: Sorting;
-  pagination: Pagination;
+  sorting: ACQ.Sorting;
+  pagination: ACQ.Pagination;
   tenantId?: string;
 }
 

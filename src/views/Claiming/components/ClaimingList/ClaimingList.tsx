@@ -44,8 +44,8 @@ interface Props {
   onHeaderClick: () => void;
   onNeedMoreData: () => void;
   onSelect: (item: Claim) => void;
-  pagination: Pagination;
-  sortDirection?: SortingOrder;
+  pagination: ACQ.Pagination;
+  sortDirection?: ACQ.SortingOrder;
   sortingField?: keyof Claim;
   totalCount: number;
   visibleColumns: ClaimingListColumn[];

@@ -5,11 +5,13 @@ import type {
   HTTPClientOptions,
 } from '@folio/stripes-acq-components';
 
-import { fetchPieces } from './fetchPieces';
-import { fetchOrderLinesByIds } from './fetchOrderLinesByIds';
-import { fetchOrdersByIds } from './fetchOrdersByIds';
-import { fetchOrganizationsByIds } from './fetchOrganizationsByIds';
-import { fetchReceivingTitlesByIds } from './fetchReceivingTitlesByIds';
+import {
+  fetchPieces,
+  fetchOrderLinesByIds,
+  fetchOrdersByIds,
+  fetchOrganizationsByIds,
+  fetchReceivingTitlesByIds,
+} from '@folio/stripes-acq-components';
 
 interface DataShape {
   claims: ACQ.Claim[];
