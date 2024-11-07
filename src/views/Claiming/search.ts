@@ -2,6 +2,7 @@ import compact from 'lodash/compact';
 import flatten from 'lodash/flatten';
 
 import {
+  ALL_RECORDS_CQL,
   buildArrayFieldQuery,
   buildDateRangeQuery,
   buildDateTimeRangeQuery,
@@ -10,7 +11,6 @@ import {
   connectQuery,
 } from '@folio/stripes-acq-components';
 
-import { ALL_RECORDS_CQL } from '../../constants';
 import {
   FILTERS,
   ORDER_FORMAT_MATERIAL_TYPE_MAP,
@@ -38,7 +38,6 @@ export const getKeywordQuery = (query: string): string => CLAIMING_SEARCHABLE_IN
   '',
 );
 
-// TOOD: fix filters
 export const buildClaimingQuery = (filters: ActiveFilters, sorting: ACQ.Sorting): string => {
   let materialTypeFilterQuery: string | undefined;
 

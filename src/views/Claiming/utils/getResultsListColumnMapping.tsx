@@ -27,7 +27,7 @@ export const getResultsListColumnMapping = ({
     select: (
       <Checkbox
         aria-label={intl.formatMessage({ id: 'ui-claims.claiming.results.columns.selectAll' })}
-        // checked={allRecordsSelected}
+        // checked={..} TODO: https://folio-org.atlassian.net/browse/UICLAIM-3
         onChange={selectAll}
         type="checkbox"
         disabled={disabled}

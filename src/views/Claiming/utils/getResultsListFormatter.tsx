@@ -26,7 +26,7 @@ export const getResultsListFormatter = ({ intl, onSelect, disabled }: Params): F
       <Checkbox
         aria-label={intl.formatMessage({ id: 'claiming.results.columns.select' }, { term: item.id })}
         type="checkbox"
-        // checked={Boolean(selectedRecordsMap[record.id])}
+        // checked={..} TODO: https://folio-org.atlassian.net/browse/UICLAIM-3
         onChange={() => onSelect(item)}
         disabled={disabled}
       />

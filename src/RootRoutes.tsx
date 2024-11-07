@@ -7,7 +7,7 @@ import {
 import { CLAIMING_ROUTE } from './constants';
 import { Claiming } from './views';
 
-export const RootRoutes = () => {
+export const RootRoutes: React.FC = () => {
   return (
     <Switch>
       <Route

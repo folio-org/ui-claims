@@ -96,11 +96,11 @@ export const Claiming: React.FC = () => {
   useFiltersReset(resetFilters);
 
   const selectAll = useCallback(() => {
-    console.log('all selected');
+    console.log('all selected'); // TODO: https://folio-org.atlassian.net/browse/UICLAIM-3
   }, []);
 
   const selectOne = useCallback(() => {
-    console.log('one selected');
+    console.log('one selected'); // TODO: https://folio-org.atlassian.net/browse/UICLAIM-3
   }, []);
 
   const columnMapping = useMemo(() => {
@@ -119,7 +119,7 @@ export const Claiming: React.FC = () => {
   const queryFilter = filters?.[SEARCH_PARAMETER];
   const pageTitle = queryFilter ? intl.formatMessage({ id: 'ui-claims.document.title.search' }, { query: queryFilter }) : null;
 
-  const renderActionMenu = ({ onToggle }: { onToggle: (key: string) => void }) => {
+  const renderActionMenu = ({ onToggle /* TODO: https://folio-org.atlassian.net/browse/UICLAIM-3 */ }: { onToggle: (key: string) => void }) => {
     return (
       <ColumnManagerMenu
         prefix="claiming"

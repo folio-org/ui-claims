@@ -7,9 +7,11 @@ import {
   useNamespace,
   useOkapiKy,
 } from '@folio/stripes/core';
-import { LIMIT_MAX } from '@folio/stripes-acq-components';
+import {
+  ALL_RECORDS_CQL,
+  LIMIT_MAX,
+} from '@folio/stripes-acq-components';
 
-import { ALL_RECORDS_CQL } from '../../constants';
 import { fetchClaims } from '../../utils';
 
 interface Params extends Partial<ACQ.Pagination> {
