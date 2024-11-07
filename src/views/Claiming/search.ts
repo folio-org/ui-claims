@@ -1,5 +1,3 @@
-// TODO: move reusable to acq-components
-
 import compact from 'lodash/compact';
 import flatten from 'lodash/flatten';
 
@@ -24,7 +22,7 @@ export const CLAIMING_SEARCHABLE_INDICES = [
   'titles.title',
   'poLine.titleOrPackage',
   'titles.productIds',
-  'purchaseOrder.poNumber', // TODO: BE is required
+  'purchaseOrder.poNumber',
   'poLine.poLineNumber',
   'poLine.vendorDetail.referenceNumbers',
 ];
@@ -41,7 +39,7 @@ export const getKeywordQuery = (query: string): string => CLAIMING_SEARCHABLE_IN
 );
 
 // TOOD: fix filters
-export const buildClaimingQuery = (filters: ActiveFilters, sorting: Sorting): string => {
+export const buildClaimingQuery = (filters: ActiveFilters, sorting: ACQ.Sorting): string => {
   let materialTypeFilterQuery: string | undefined;
 
   const materialType = filters[FILTERS.MATERIAL_TYPE];
@@ -85,7 +83,7 @@ export const buildClaimingQuery = (filters: ActiveFilters, sorting: Sorting): st
       [FILTERS.EXPECTED_RECEIPT_DATE]: buildDateRangeQuery.bind(null, [FILTERS.EXPECTED_RECEIPT_DATE]),
       [FILTERS.RECEIVED_DATE]: buildDateRangeQuery.bind(null, [FILTERS.RECEIVED_DATE]),
       [FILTERS.RECEIPT_DUE]: buildDateRangeQuery.bind(null, [FILTERS.RECEIPT_DUE]),
-      [FILTERS.LOCATION]: (filterValue: FilterValue) => `(${
+      [FILTERS.LOCATION]: (filterValue: ACQ.FilterValue) => `(${
         [FILTERS.LOCATION, 'poLine.searchLocationIds']
           .map((filterKey) => buildArrayFieldQuery(filterKey, filterValue))
           .join(' or ')

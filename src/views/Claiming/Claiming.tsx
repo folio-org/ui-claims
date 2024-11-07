@@ -188,7 +188,7 @@ export const Claiming: React.FC = () => {
           isFiltersOpened={isFiltersOpened}
           isLoading={isFetching}
         >
-          {(({ height, width }: Dimensions) => (
+          {(({ height, width }: ACQ.Dimensions) => (
             <ClaimingList
               columnMapping={columnMapping}
               contentData={claims}

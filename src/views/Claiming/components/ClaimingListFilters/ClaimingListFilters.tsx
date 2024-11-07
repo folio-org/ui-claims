@@ -32,12 +32,12 @@ import type { ActiveFilters } from '../../types';
 
 interface Props {
   activeFilters: ActiveFilters;
-  applyFilters: (name: string, value: FilterValue) => void;
+  applyFilters: (name: string, value: ACQ.FilterValue) => void;
   disabled: boolean;
   tenantId?: string;
 }
 
-type FilterDataShape = { name: string, values: FilterValue };
+type FilterDataShape = { name: string, values: ACQ.FilterValue };
 
 const applyFiltersAdapter = (applyFilters: Props['applyFilters']) => ({ name, values }: FilterDataShape) => applyFilters(name, values);
 

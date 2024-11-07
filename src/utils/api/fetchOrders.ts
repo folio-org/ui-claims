@@ -3,7 +3,7 @@ import { ORDERS_API } from '@folio/stripes-acq-components';
 import type {
   HTTPClient,
   HTTPClientOptions,
-} from '../../typing';
+} from '@folio/stripes-acq-components';
 
 interface DataShape {
   purchaseOrders: ACQ.Order[];

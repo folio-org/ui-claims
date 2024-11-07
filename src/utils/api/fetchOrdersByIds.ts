@@ -4,7 +4,7 @@ import type {
   HTTPClient,
   HTTPClientOptions,
   HTTPClientSearchParams,
-} from '../../typing';
+} from '@folio/stripes-acq-components';
 
 import { fetchOrders } from './fetchOrders';
 

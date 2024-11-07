@@ -3,7 +3,7 @@ import keyBy from 'lodash/keyBy';
 import type {
   HTTPClient,
   HTTPClientOptions,
-} from '../../typing';
+} from '@folio/stripes-acq-components';
 
 import { fetchPieces } from './fetchPieces';
 import { fetchOrderLinesByIds } from './fetchOrderLinesByIds';

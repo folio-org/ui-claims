@@ -3,7 +3,7 @@ import { VENDORS_API } from '@folio/stripes-acq-components';
 import type {
   HTTPClient,
   HTTPClientOptions,
-} from '../../typing';
+} from '@folio/stripes-acq-components';
 
 interface DataShape {
   organizations: ACQ.Organization[];

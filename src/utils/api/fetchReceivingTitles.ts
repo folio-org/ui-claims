@@ -1,7 +1,7 @@
 import type {
   HTTPClient,
   HTTPClientOptions,
-} from '../../typing';
+} from '@folio/stripes-acq-components';
 
 import { RECEIVING_TITLES_API } from '../../constants';
 
