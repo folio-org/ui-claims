@@ -50,7 +50,6 @@ export const fetchClaims = (httpClient: HTTPClient) => async (options: HTTPClien
         vendorCode: vendor.code,
         vendorName: vendor.name,
         poLineNumber: poLinesDict[piece.poLineId].poLineNumber,
-        piecesToClaim: 0, // TODO: BE support is required
       };
     }),
     totalRecords,

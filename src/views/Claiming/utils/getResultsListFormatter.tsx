@@ -34,7 +34,6 @@ export const getResultsListFormatter = ({ intl, onSelect, disabled }: Params): F
     [CLAIMING_LIST_COLUMNS.chronology]: ({ chronology }: Claim) => (chronology || <NoValue />),
     [CLAIMING_LIST_COLUMNS.displaySummary]: ({ displaySummary }: Claim) => displaySummary || <NoValue />,
     [CLAIMING_LIST_COLUMNS.enumeration]: ({ enumeration }: Claim) => enumeration || <NoValue />,
-    [CLAIMING_LIST_COLUMNS.piecesToClaim]: ({ piecesToClaim }: Claim) => piecesToClaim || <NoValue />,
     [CLAIMING_LIST_COLUMNS.poLineNumber]: ({ poLineNumber }: Claim) => poLineNumber || <NoValue />,
     [CLAIMING_LIST_COLUMNS.receiptDate]: ({ receiptDate }: Claim) => <FolioFormattedDate value={receiptDate} />,
     [CLAIMING_LIST_COLUMNS.receivingStatus]: ({ receivingStatus }: Claim) => receivingStatus || <NoValue />,

@@ -12,6 +12,7 @@ import {
   connectQuery,
 } from '@folio/stripes-acq-components';
 
+import { ALL_RECORDS_CQL } from '../../constants';
 import {
   FILTERS,
   ORDER_FORMAT_MATERIAL_TYPE_MAP,
@@ -77,8 +78,8 @@ export const buildClaimingQuery = (filters: ActiveFilters, sorting: Sorting): st
       return getKeywordQuery(query);
     },
     {
-      [FILTERS.DATE_CREATED]: buildDateTimeRangeQuery.bind(null, [FILTERS.DATE_CREATED]),
-      [FILTERS.DATE_UPDATED]: buildDateTimeRangeQuery.bind(null, [FILTERS.DATE_UPDATED]),
+      [FILTERS.TITLE_DATE_CREATED]: buildDateTimeRangeQuery.bind(null, [FILTERS.TITLE_DATE_CREATED]),
+      [FILTERS.TITLE_DATE_UPDATED]: buildDateTimeRangeQuery.bind(null, [FILTERS.TITLE_DATE_UPDATED]),
       [FILTERS.PIECE_DATE_CREATED]: buildDateTimeRangeQuery.bind(null, [FILTERS.PIECE_DATE_CREATED]),
       [FILTERS.PIECE_DATE_UPDATED]: buildDateTimeRangeQuery.bind(null, [FILTERS.PIECE_DATE_UPDATED]),
       [FILTERS.EXPECTED_RECEIPT_DATE]: buildDateRangeQuery.bind(null, [FILTERS.EXPECTED_RECEIPT_DATE]),
@@ -94,13 +95,8 @@ export const buildClaimingQuery = (filters: ActiveFilters, sorting: Sorting): st
     },
   );
 
-  const filterQuery = compact([filtersFilterQuery, materialTypeFilterQuery]).join(' and ') || 'cql.allRecords=1';
-  const sortingQuery = buildSortingQuery(
-    sorting,
-    {
-      // 'titles.title': 'title',
-    },
-  ) || 'sortby receiptDate/sort.ascending';
+  const filterQuery = compact([filtersFilterQuery, materialTypeFilterQuery]).join(' and ') || ALL_RECORDS_CQL;
+  const sortingQuery = buildSortingQuery(sorting) || 'sortby receiptDate/sort.ascending';
 
   return connectQuery(filterQuery, sortingQuery);
 };

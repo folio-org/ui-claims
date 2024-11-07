@@ -4,6 +4,5 @@ declare namespace ACQ {
     vendorCode?: string;
     vendorName?: string;
     poLineNumber?: string;
-    piecesToClaim: number;
   }
 }
