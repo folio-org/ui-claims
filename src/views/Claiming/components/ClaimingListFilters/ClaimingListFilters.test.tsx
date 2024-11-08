@@ -8,8 +8,8 @@ import {
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { ORDER_TYPES } from '@folio/stripes-acq-components';
 
-import ClaimingListFilters from './ClaimingListFilters';
 import { FILTERS } from '../../constants';
+import ClaimingListFilters from './ClaimingListFilters';
 
 jest.mock('@folio/stripes-acq-components', () => ({
   ...jest.requireActual('@folio/stripes-acq-components'),
