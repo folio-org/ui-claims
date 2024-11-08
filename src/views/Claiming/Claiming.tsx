@@ -20,6 +20,7 @@ import {
 } from '@folio/stripes/smart-components';
 import {
   FiltersPane,
+  getFiltersCount,
   NoResultsMessage,
   ResetButton,
   RESULT_COUNT_INCREMENT,
@@ -166,7 +167,7 @@ export const Claiming: React.FC = () => {
             <ResetButton
               id="reset-receiving-filters"
               reset={resetFilters}
-              disabled={!location.search || isFetching}
+              disabled={!getFiltersCount(filters) || isFetching}
             />
 
             <ClaimingListFilters
