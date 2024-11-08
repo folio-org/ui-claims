@@ -41,7 +41,7 @@ type FilterDataShape = { name: string, values: ACQ.FilterValue };
 
 const applyFiltersAdapter = (applyFilters: Props['applyFilters']) => ({ name, values }: FilterDataShape) => applyFilters(name, values);
 
-export const ClaimingListFilters: React.FC<Props> = ({
+const ClaimingListFilters: React.FC<Props> = ({
   activeFilters,
   applyFilters,
   disabled,
