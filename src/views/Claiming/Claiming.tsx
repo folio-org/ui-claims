@@ -22,6 +22,7 @@ import {
   FiltersPane,
   getFiltersCount,
   NoResultsMessage,
+  PIECE_STATUS,
   ResetButton,
   RESULT_COUNT_INCREMENT,
   ResultsPane,
@@ -41,6 +42,7 @@ import {
 import {
   CLAIMING_LIST_COLUMNS,
   CLAIMING_LIST_SORTABLE_FIELDS,
+  FILTERS,
 } from './constants';
 import { useClaiming } from './hooks';
 import { CLAIMING_SEARCHABLE_INDICES } from './search';
@@ -58,6 +60,13 @@ const SEARCH_INDICES = [
   ...CLAIMING_SEARCHABLE_INDICES.map(index => ({ labelId: `ui-claims.search.index.${index}`, value: index })),
 ];
 
+const FILTERS_OPTIONS = {};
+
+const DEFAULT_FILTERS = {
+  [FILTERS.POL_CLAIMING_ACTIVE]: ['true'],
+  [FILTERS.RECEIVING_STATUS]: [PIECE_STATUS.late],
+};
+
 export const Claiming: React.FC = () => {
   const intl = useIntl();
   const history = useHistory();
@@ -74,7 +83,7 @@ export const Claiming: React.FC = () => {
     resetFilters,
     changeIndex,
     searchIndex,
-  ] = useLocationFilters(location, history, resetData);
+  ] = useLocationFilters(location, history, resetData, FILTERS_OPTIONS, DEFAULT_FILTERS);
 
   const [
     sortingField,
