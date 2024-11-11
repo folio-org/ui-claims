@@ -1,8 +1,12 @@
 import { renderHook } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  ORDER_FORMATS,
+  SEARCH_PARAMETER,
+} from '@folio/stripes-acq-components';
 
 import { useClaims } from '../../../../hooks';
-import { useClaiming } from './useClaiming';
 import { FILTERS } from '../../constants';
+import { useClaiming } from './useClaiming';
 
 jest.mock('../../../../hooks', () => ({
   useClaims: jest.fn(),
@@ -47,7 +51,10 @@ describe('useClaiming', () => {
   it('should handle filters count correctly', () => {
     const options = {
       filters: {
+        [SEARCH_PARAMETER]: 'search-query',
         [FILTERS.LOCATION]: 'location-id',
+        [FILTERS.MATERIAL_TYPE]: 'material-type',
+        [FILTERS.ORDER_FORMAT]: ORDER_FORMATS.physicalResource,
       },
       sorting: {
         sorting: 'receiptDate',
@@ -63,7 +70,12 @@ describe('useClaiming', () => {
       {
         limit: options.pagination.limit,
         offset: options.pagination.offset,
-        query: '((poLine.locations=="*location-id*" or poLine.searchLocationIds=="*location-id*")) sortby receiptDate/sort.ascending',
+        query: (`
+          ((titles.title=="*search-query*" or poLine.titleOrPackage=="*search-query*" or titles.productIds=="*search-query*" or purchaseOrder.poNumber=="*search-query*" or poLine.poLineNumber=="*search-query*" or poLine.vendorDetail.referenceNumbers=="*search-query*")
+          and (poLine.locations=="*location-id*" or poLine.searchLocationIds=="*location-id*")
+          and ((poLine.orderFormat=="Physical Resource" and (poLine.physical.materialType=="material-type"))))
+          sortby receiptDate/sort.ascending
+        `).replace(/\s+/g, ' ').trim(),
       },
       {
         breakWithDefaults: false,

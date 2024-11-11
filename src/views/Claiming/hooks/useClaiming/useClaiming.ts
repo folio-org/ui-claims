@@ -1,4 +1,7 @@
-import { getFiltersCount } from '@folio/stripes-acq-components';
+import {
+  getFiltersCount,
+  SEARCH_PARAMETER,
+} from '@folio/stripes-acq-components';
 
 import { useClaims } from '../../../../hooks';
 import { buildClaimingQuery } from '../../search';
@@ -6,7 +9,7 @@ import { buildClaimingQuery } from '../../search';
 import type { ActiveFilters } from '../../types';
 
 interface Options {
-  filters: ActiveFilters;
+  filters: ActiveFilters & { [SEARCH_PARAMETER]?: string };
   sorting: ACQ.Sorting;
   pagination: ACQ.Pagination;
   tenantId?: string;
