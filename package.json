@@ -4,13 +4,16 @@
   "description": "UI module for claiming",
   "main": "src/index.tsx",
   "repository": "",
+  "publishConfig": {
+    "registry": "https://repository.folio.org/repository/npm-folio/"
+  },
   "license": "Apache-2.0",
   "scripts": {
     "start": "stripes serve",
     "build": "stripes build --output ./output",
     "build-mod-descriptor": "stripes mod descriptor --full --strict | jq '.[]' > module-descriptor.json ",
     "formatjs-compile": "formatjs compile-folder --ast --format simple ./translations/ui-claims ./translations/ui-claims/compiled",
-    "lint": "eslint .",
+    "lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\"",
     "test": "jest --ci --coverage"
   },
   "devDependencies": {
@@ -46,6 +49,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intl": "^6.4.4",
+    "react-query": "^3.24.2",
     "react-redux": "^8.0.5",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
@@ -54,7 +58,8 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@folio/stripes-acq-components": "^6.0.0"
+    "@folio/stripes-acq-components": "^6.0.0",
+    "lodash": "^4.17.5"
   },
   "peerDependencies": {
     "@folio/stripes": "^9.2.0",
@@ -64,9 +69,6 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
   },
-  "stripesDeps": [
-    "@folio/stripes-acq-components"
-  ],
   "stripes": {
     "actsAs": [
       "app"
@@ -79,6 +81,9 @@
         "alt": "Create, view and manage claims",
         "title": "Claiming"
       }
+    ],
+    "stripesDeps": [
+      "@folio/stripes-acq-components"
     ],
     "okapiInterfaces": {},
     "permissionSets": [

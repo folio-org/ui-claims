@@ -1,5 +1,7 @@
 # ui-claims
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=org.folio%3Aui-claims&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=org.folio%3Aui-claims) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=org.folio%3Aui-claims&metric=coverage)](https://sonarcloud.io/summary/new_code?id=org.folio%3Aui-claims) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=org.folio%3Aui-claims&metric=bugs)](https://sonarcloud.io/summary/new_code?id=org.folio%3Aui-claims) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=org.folio%3Aui-claims&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=org.folio%3Aui-claims) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=org.folio%3Aui-claims&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=org.folio%3Aui-claims)
+
 Copyright (C) 2024 The Open Library Foundation
 
 This software is distributed under the terms of the Apache License, Version 2.0. See the file "[LICENSE](LICENSE)" for more information.
