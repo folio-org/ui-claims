@@ -37,7 +37,8 @@ export const getKeywordQuery = (query: string): string => CLAIMING_SEARCHABLE_IN
   '',
 );
 
-export const buildClaimingQuery = (filters: ActiveFilters, sorting: ACQ.Sorting): string => {
+export const buildClaimingQuery = (activeFilters: ActiveFilters, sorting: ACQ.Sorting): string => {
+  const filters = { ...activeFilters };
   let materialTypeFilterQuery: string | undefined;
 
   const materialType = filters[FILTERS.MATERIAL_TYPE];
