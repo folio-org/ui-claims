@@ -4,3 +4,4 @@
 
 * [UICLAIM-7](https://issues.folio.org/browse/UICLAIM-7) Setup new UI project `ui-claims`.
 * [UICLAIM-1](https://issues.folio.org/browse/UICLAIM-1) Implement UI interface for searching claims: filters and results list.
+* [UICLAIM-3](https://folio-org.atlassian.net/browse/UICLAIM-3) Implement "Send claim" action.
