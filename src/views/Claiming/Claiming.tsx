@@ -9,6 +9,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 
+import { MenuSection } from '@folio/stripes/components';
 import {
   TitleManager,
   useNamespace,
@@ -19,8 +20,11 @@ import {
   useColumnManager,
 } from '@folio/stripes/smart-components';
 import {
+  DelayClaimActionMenuItem,
+  SendClaimActionMenuItem,
   FiltersPane,
   getFiltersCount,
+  MarkUnreceivableActionMenuItem,
   NoResultsMessage,
   PIECE_STATUS,
   ResetButton,
@@ -28,17 +32,25 @@ import {
   ResultsPane,
   SEARCH_PARAMETER,
   SingleSearchForm,
+  useClaimsSend,
   useFiltersReset,
   useFiltersToogle,
   useLocationFilters,
   useLocationSorting,
+  useModalToggle,
   usePagination,
+  useRecordsSelect,
+  useShowCallout,
 } from '@folio/stripes-acq-components';
 
 import {
   ClaimingList,
   ClaimingListFilters,
 } from './components';
+import {
+  DelayClaimModal,
+  SendClaimModal,
+} from './components/modals';
 import {
   CLAIMING_LIST_COLUMNS,
   CLAIMING_LIST_SORTABLE_FIELDS,
@@ -72,7 +84,10 @@ export const Claiming: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
   const [namespace] = useNamespace({ key: 'filters' });
+  const showCallout = useShowCallout();
   const { isFiltersOpened, toggleFilters } = useFiltersToogle(namespace);
+  const [isClaimDelayModalOpen, toggleClaimDelayModal] = useModalToggle();
+  const [isClaimSendModalOpen, toggleClaimSendModal] = useModalToggle();
 
   const [
     filters,
@@ -94,6 +109,11 @@ export const Claiming: React.FC = () => {
   const { pagination, changePage } = usePagination({ limit: RESULT_COUNT_INCREMENT, offset: 0 });
 
   const {
+    isLoading: isSendClaimLoading,
+    sendClaims,
+  } = useClaimsSend();
+
+  const {
     claims,
     isFetching,
     totalRecords,
@@ -105,21 +125,22 @@ export const Claiming: React.FC = () => {
 
   useFiltersReset(resetFilters);
 
-  const selectAll = useCallback(() => {
-    console.log('all selected'); // TODO: https://folio-org.atlassian.net/browse/UICLAIM-3
-  }, []);
-
-  const selectOne = useCallback(() => {
-    console.log('one selected'); // TODO: https://folio-org.atlassian.net/browse/UICLAIM-3
-  }, []);
+  const {
+    allRecordsSelected,
+    selectedRecordsMap,
+    selectedRecordsLength,
+    toggleSelectAll,
+    selectRecord,
+  } = useRecordsSelect({ records: claims });
 
   const columnMapping = useMemo(() => {
     return getResultsListColumnMapping({
-      intl,
-      selectAll,
       disabled: isFetching,
+      intl,
+      isAllSelected: allRecordsSelected,
+      selectAll: toggleSelectAll,
     });
-  }, [intl, isFetching, selectAll]);
+  }, [allRecordsSelected, intl, isFetching, toggleSelectAll]);
 
   const {
     toggleColumn,
@@ -129,15 +150,42 @@ export const Claiming: React.FC = () => {
   const queryFilter = filters?.[SEARCH_PARAMETER];
   const pageTitle = queryFilter ? intl.formatMessage({ id: 'ui-claims.document.title.search' }, { query: queryFilter }) : null;
 
-  const renderActionMenu = ({ onToggle /* TODO: https://folio-org.atlassian.net/browse/UICLAIM-3 */ }: { onToggle: (key: string) => void }) => {
+  const renderActionMenu = ({ onToggle }: { onToggle: (e?: Event) => void }) => {
     return (
-      <ColumnManagerMenu
-        prefix="claiming"
-        columnMapping={columnMapping}
-        visibleColumns={visibleColumns}
-        toggleColumn={toggleColumn}
-        excludeColumns={[CLAIMING_LIST_COLUMNS.select]}
-      />
+      <>
+        <MenuSection>
+          <SendClaimActionMenuItem
+            disabled={!selectedRecordsLength}
+            onClick={(e) => {
+              onToggle(e);
+              toggleClaimSendModal();
+            }}
+          />
+
+          <DelayClaimActionMenuItem
+            disabled={!selectedRecordsLength}
+            onClick={(e) => {
+              onToggle(e);
+              toggleClaimDelayModal();
+            }}
+          />
+
+          <MarkUnreceivableActionMenuItem
+            disabled={!selectedRecordsLength}
+            onClick={(e) => {
+              onToggle(e);
+            }}
+          />
+        </MenuSection>
+
+        <ColumnManagerMenu
+          prefix="claiming"
+          columnMapping={columnMapping}
+          visibleColumns={visibleColumns}
+          toggleColumn={toggleColumn}
+          excludeColumns={[CLAIMING_LIST_COLUMNS.select]}
+        />
+      </>
     );
   };
 
@@ -149,6 +197,33 @@ export const Claiming: React.FC = () => {
       toggleFilters={toggleFilters}
     />
   );
+
+  const onClaimsDelay = useCallback(() => {
+    console.log('delay claim'); // TODO: https://folio-org.atlassian.net/browse/UICLAIM-4
+  }, []);
+
+  const onClaimsSend = useCallback(async () => {
+    try {
+      const { claimingPieceResults } = await sendClaims({
+        data: { claimingPieceIds: Object.keys(selectedRecordsMap) },
+      });
+
+      // handleClaimingPieceResults(claimingPieceResults);
+
+      showCallout({ messageId: 'ui-claims.claiming.sendClaim.success.message' });
+      toggleClaimSendModal();
+    } catch {
+      showCallout({
+        messageId: 'ui-claims.claiming.sendClaim.failure.message',
+        type: 'error',
+      });
+    }
+  }, [
+    selectedRecordsMap,
+    sendClaims,
+    showCallout,
+    toggleClaimSendModal,
+  ]);
 
   return (
     <div>
@@ -207,8 +282,9 @@ export const Claiming: React.FC = () => {
               isLoading={isFetching}
               onHeaderClick={changeSorting}
               onNeedMoreData={changePage}
-              onSelect={selectOne}
+              onSelect={selectRecord}
               pagination={pagination}
+              selectedRecordsDict={selectedRecordsMap}
               sortDirection={sortingDirection}
               sortingField={sortingField}
               totalCount={totalRecords}
@@ -218,6 +294,21 @@ export const Claiming: React.FC = () => {
           ))}
         </ResultsPane>
       </PersistedPaneset>
+
+      <DelayClaimModal
+        disabled
+        open={isClaimDelayModalOpen}
+        onCancel={toggleClaimDelayModal}
+        onSubmit={onClaimsDelay}
+      />
+
+      <SendClaimModal
+        disabled={isSendClaimLoading}
+        open={isClaimSendModalOpen}
+        onCancel={toggleClaimSendModal}
+        onSubmit={onClaimsSend}
+        selectedRecordsCount={selectedRecordsLength}
+      />
     </div>
   );
 };
