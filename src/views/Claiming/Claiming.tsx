@@ -3,7 +3,10 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { useIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 import {
   useHistory,
   useLocation,
@@ -21,8 +24,9 @@ import {
 } from '@folio/stripes/smart-components';
 import {
   DelayClaimActionMenuItem,
-  SendClaimActionMenuItem,
+  DelayClaimsModal,
   FiltersPane,
+  getClaimingIntervalFromDate,
   getFiltersCount,
   MarkUnreceivableActionMenuItem,
   NoResultsMessage,
@@ -31,7 +35,10 @@ import {
   RESULT_COUNT_INCREMENT,
   ResultsPane,
   SEARCH_PARAMETER,
+  SendClaimActionMenuItem,
+  SendClaimsModal,
   SingleSearchForm,
+  useClaimsDelay,
   useClaimsSend,
   useFiltersReset,
   useFiltersToogle,
@@ -48,19 +55,28 @@ import {
   ClaimingListFilters,
 } from './components';
 import {
-  DelayClaimModal,
-  SendClaimModal,
-} from './components/modals';
-import {
   CLAIMING_LIST_COLUMNS,
   CLAIMING_LIST_SORTABLE_FIELDS,
   FILTERS,
 } from './constants';
 import { useClaiming } from './hooks';
 import { CLAIMING_SEARCHABLE_INDICES } from './search';
-import { getResultsListColumnMapping } from './utils';
+import {
+  getResultsListColumnMapping,
+  handleClaimingPieceErrorResults,
+} from './utils';
 
 import type { ClaimingListColumn } from './types';
+
+interface DelayClaimsFormValues {
+  claimingDate: string;
+}
+
+interface SendClaimsFormValues {
+  claimingDate: string;
+  externalNote: string;
+  internalNote: string;
+}
 
 const resetData = noop;
 
@@ -114,8 +130,14 @@ export const Claiming: React.FC = () => {
   } = useClaimsSend();
 
   const {
+    delayClaims,
+    isLoading: isDelayClaimsLoading,
+  } = useClaimsDelay();
+
+  const {
     claims,
     isFetching,
+    refetch,
     totalRecords,
   } = useClaiming({
     filters,
@@ -127,10 +149,11 @@ export const Claiming: React.FC = () => {
 
   const {
     allRecordsSelected,
-    selectedRecordsMap,
+    resetSelectedRecords,
     selectedRecordsLength,
-    toggleSelectAll,
+    selectedRecordsMap,
     selectRecord,
+    toggleSelectAll,
   } = useRecordsSelect({ records: claims });
 
   const columnMapping = useMemo(() => {
@@ -171,7 +194,7 @@ export const Claiming: React.FC = () => {
           />
 
           <MarkUnreceivableActionMenuItem
-            disabled={!selectedRecordsLength}
+            disabled={!selectedRecordsLength || true /* TODO: UICLAIM-5 */}
             onClick={(e) => {
               onToggle(e);
             }}
@@ -198,27 +221,68 @@ export const Claiming: React.FC = () => {
     />
   );
 
-  const onClaimsDelay = useCallback(() => {
-    console.log('delay claim'); // TODO: https://folio-org.atlassian.net/browse/UICLAIM-4
-  }, []);
-
-  const onClaimsSend = useCallback(async () => {
+  const onClaimsDelay = useCallback(async ({ claimingDate }: DelayClaimsFormValues) => {
+    // TODO: https://folio-org.atlassian.net/browse/UICLAIM-4
     try {
-      const { claimingPieceResults } = await sendClaims({
-        data: { claimingPieceIds: Object.keys(selectedRecordsMap) },
+      await delayClaims({
+        claimingInterval: getClaimingIntervalFromDate(claimingDate),
+        pieceIds: Object.keys(selectedRecordsMap),
       });
 
-      // handleClaimingPieceResults(claimingPieceResults);
-
-      showCallout({ messageId: 'ui-claims.claiming.sendClaim.success.message' });
-      toggleClaimSendModal();
+      resetSelectedRecords();
+      refetch();
+      toggleClaimDelayModal();
+      showCallout({ messageId: 'ui-claims.claiming.delayClaim.success.message' });
     } catch {
       showCallout({
-        messageId: 'ui-claims.claiming.sendClaim.failure.message',
+        messageId: 'ui-claims.claiming.delayClaim.error.message',
         type: 'error',
       });
     }
   }, [
+    delayClaims,
+    refetch,
+    resetSelectedRecords,
+    selectedRecordsMap,
+    showCallout,
+    toggleClaimDelayModal,
+  ]);
+
+  const onClaimsSend = useCallback(async ({
+    claimingDate,
+    externalNote,
+    internalNote,
+  }: SendClaimsFormValues) => {
+    try {
+      const { claimingPieceResults } = await sendClaims({
+        data: {
+          claimingInterval: getClaimingIntervalFromDate(claimingDate),
+          claimingPieceIds: Object.keys(selectedRecordsMap),
+          externalNote,
+          internalNote,
+        },
+      });
+
+      const errorResults = claimingPieceResults.filter((val) => 'error' in val);
+
+      if (errorResults.length) {
+        handleClaimingPieceErrorResults(errorResults, showCallout);
+      } else {
+        showCallout({ messageId: 'ui-claims.claiming.sendClaim.success.message' });
+      }
+
+      resetSelectedRecords();
+      refetch();
+      toggleClaimSendModal();
+    } catch {
+      showCallout({
+        messageId: 'ui-claims.claiming.sendClaim.error.message',
+        type: 'error',
+      });
+    }
+  }, [
+    refetch,
+    resetSelectedRecords,
     selectedRecordsMap,
     sendClaims,
     showCallout,
@@ -295,19 +359,26 @@ export const Claiming: React.FC = () => {
         </ResultsPane>
       </PersistedPaneset>
 
-      <DelayClaimModal
-        disabled
+      <DelayClaimsModal
+        claimsCount={selectedRecordsLength}
+        disabled={isDelayClaimsLoading}
         open={isClaimDelayModalOpen}
         onCancel={toggleClaimDelayModal}
         onSubmit={onClaimsDelay}
       />
 
-      <SendClaimModal
+      <SendClaimsModal
+        claimsCount={selectedRecordsLength}
         disabled={isSendClaimLoading}
+        message={(
+          <FormattedMessage
+            id="ui-claims.claiming.sendClaim.modal.message"
+            values={{ count: selectedRecordsLength }}
+          />
+        )}
         open={isClaimSendModalOpen}
         onCancel={toggleClaimSendModal}
         onSubmit={onClaimsSend}
-        selectedRecordsCount={selectedRecordsLength}
       />
     </div>
   );
