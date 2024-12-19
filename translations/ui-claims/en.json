@@ -53,6 +53,10 @@
   "claiming.sendClaim.modal.message": "Claim <b>{count, number}</b> {count, plural, one {piece} other {pieces}}?",
   "claiming.sendClaim.success.message": "Claims are currently being processed. Please check Export manager for job status.",
   "claiming.sendClaim.error.message": "Failure on send claims",
+  "claiming.markUnreceivable.modal.heading": "Mark unreceivable",
+  "claiming.markUnreceivable.modal.message": "Mark <b>{count, number}</b> {count, plural, one {piece} other {pieces}} unreceivable?",
+  "claiming.markUnreceivable.success.message": "Claims are successfully marked unreceivable",
+  "claiming.markUnreceivable.error.message": "Failure on mark unreceivable",
   
   "permission.claiming.view": "Claims: View claiming"
 }

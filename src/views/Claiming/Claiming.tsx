@@ -46,6 +46,7 @@ import {
   useLocationSorting,
   useModalToggle,
   usePagination,
+  usePiecesStatusBatchUpdate,
   useRecordsSelect,
   useShowCallout,
 } from '@folio/stripes-acq-components';
@@ -53,6 +54,7 @@ import {
 import {
   ClaimingList,
   ClaimingListFilters,
+  MarkUnreceivableModal,
 } from './components';
 import {
   CLAIMING_LIST_COLUMNS,
@@ -104,6 +106,7 @@ export const Claiming: React.FC = () => {
   const { isFiltersOpened, toggleFilters } = useFiltersToogle(namespace);
   const [isClaimDelayModalOpen, toggleClaimDelayModal] = useModalToggle();
   const [isClaimSendModalOpen, toggleClaimSendModal] = useModalToggle();
+  const [isMarkUnreceivableModalOpen, toggleMarkUnreceivableModalOpen] = useModalToggle();
 
   const [
     filters,
@@ -133,6 +136,11 @@ export const Claiming: React.FC = () => {
     delayClaims,
     isLoading: isDelayClaimsLoading,
   } = useClaimsDelay();
+
+  const {
+    isLoading: isPiecesStatusUpdateLoading,
+    updatePiecesStatus,
+  } = usePiecesStatusBatchUpdate();
 
   const {
     claims,
@@ -195,9 +203,10 @@ export const Claiming: React.FC = () => {
           />
 
           <MarkUnreceivableActionMenuItem
-            disabled={!selectedRecordsLength || true /* TODO: UICLAIM-5 */}
+            disabled={!selectedRecordsLength}
             onClick={(e) => {
               onToggle(e);
+              toggleMarkUnreceivableModalOpen();
             }}
           />
         </MenuSection>
@@ -221,33 +230,6 @@ export const Claiming: React.FC = () => {
       toggleFilters={toggleFilters}
     />
   );
-
-  const onClaimsDelay = useCallback(async ({ claimingDate }: DelayClaimsFormValues) => {
-    // TODO: https://folio-org.atlassian.net/browse/UICLAIM-4
-    try {
-      await delayClaims({
-        claimingInterval: getClaimingIntervalFromDate(claimingDate),
-        pieceIds: Object.keys(selectedRecordsMap),
-      });
-
-      resetAllSelectedRecords();
-      refetch();
-      toggleClaimDelayModal();
-      showCallout({ messageId: 'ui-claims.claiming.delayClaim.success.message' });
-    } catch {
-      showCallout({
-        messageId: 'ui-claims.claiming.delayClaim.error.message',
-        type: 'error',
-      });
-    }
-  }, [
-    delayClaims,
-    refetch,
-    resetAllSelectedRecords,
-    selectedRecordsMap,
-    showCallout,
-    toggleClaimDelayModal,
-  ]);
 
   const onClaimsSend = useCallback(async ({
     claimingDate,
@@ -291,6 +273,61 @@ export const Claiming: React.FC = () => {
     sendClaims,
     showCallout,
     toggleClaimSendModal,
+  ]);
+
+  const onClaimsDelay = useCallback(async ({ claimingDate }: DelayClaimsFormValues) => {
+    // TODO: https://folio-org.atlassian.net/browse/UICLAIM-4
+    try {
+      await delayClaims({
+        claimingInterval: getClaimingIntervalFromDate(claimingDate),
+        pieceIds: Object.keys(selectedRecordsMap),
+      });
+
+      resetAllSelectedRecords();
+      refetch();
+      toggleClaimDelayModal();
+      showCallout({ messageId: 'ui-claims.claiming.delayClaim.success.message' });
+    } catch {
+      showCallout({
+        messageId: 'ui-claims.claiming.delayClaim.error.message',
+        type: 'error',
+      });
+    }
+  }, [
+    delayClaims,
+    refetch,
+    resetAllSelectedRecords,
+    selectedRecordsMap,
+    showCallout,
+    toggleClaimDelayModal,
+  ]);
+
+  const onMarkUnreceivable = useCallback(async () => {
+    try {
+      await updatePiecesStatus({
+        data: {
+          pieceIds: Object.keys(selectedRecordsMap),
+          receivingStatus: PIECE_STATUS.unreceivable,
+        },
+      });
+
+      resetAllSelectedRecords();
+      refetch();
+      toggleMarkUnreceivableModalOpen();
+      showCallout({ messageId: 'ui-claims.claiming.markUnreceivable.success.message' });
+    } catch (error) {
+      showCallout({
+        messageId: 'ui-claims.claiming.markUnreceivable.error.message',
+        type: 'error',
+      });
+    }
+  }, [
+    refetch,
+    resetAllSelectedRecords,
+    selectedRecordsMap,
+    showCallout,
+    toggleMarkUnreceivableModalOpen,
+    updatePiecesStatus,
   ]);
 
   return (
@@ -383,6 +420,14 @@ export const Claiming: React.FC = () => {
         open={isClaimSendModalOpen}
         onCancel={toggleClaimSendModal}
         onSubmit={onClaimsSend}
+      />
+
+      <MarkUnreceivableModal
+        claimsCount={selectedRecordsLength}
+        disabled={isPiecesStatusUpdateLoading}
+        open={isMarkUnreceivableModalOpen}
+        onCancel={toggleMarkUnreceivableModalOpen}
+        onSubmit={onMarkUnreceivable}
       />
     </div>
   );
