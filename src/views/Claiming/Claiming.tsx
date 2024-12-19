@@ -276,7 +276,6 @@ export const Claiming: React.FC = () => {
   ]);
 
   const onClaimsDelay = useCallback(async ({ claimingDate }: DelayClaimsFormValues) => {
-    // TODO: https://folio-org.atlassian.net/browse/UICLAIM-4
     try {
       await delayClaims({
         claimingInterval: getClaimingIntervalFromDate(claimingDate),

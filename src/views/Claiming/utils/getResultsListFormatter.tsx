@@ -30,7 +30,7 @@ export const getResultsListFormatter = ({
   return {
     select: (item: Claim) => (
       <Checkbox
-        aria-label={intl.formatMessage({ id: 'claiming.results.columns.select' }, { term: item.id })}
+        aria-label={intl.formatMessage({ id: 'ui-claims.claiming.results.columns.select' }, { term: item.id })}
         type="checkbox"
         checked={Boolean(selectedRecordsDict[item.id])}
         onChange={() => onSelect(item)}
