@@ -149,7 +149,8 @@ export const Claiming: React.FC = () => {
 
   const {
     allRecordsSelected,
-    resetSelectedRecords,
+    resetAllSelectedRecords,
+    resetOtherSelectedRecordsByIds,
     selectedRecordsLength,
     selectedRecordsMap,
     selectRecord,
@@ -229,7 +230,7 @@ export const Claiming: React.FC = () => {
         pieceIds: Object.keys(selectedRecordsMap),
       });
 
-      resetSelectedRecords();
+      resetAllSelectedRecords();
       refetch();
       toggleClaimDelayModal();
       showCallout({ messageId: 'ui-claims.claiming.delayClaim.success.message' });
@@ -242,7 +243,7 @@ export const Claiming: React.FC = () => {
   }, [
     delayClaims,
     refetch,
-    resetSelectedRecords,
+    resetAllSelectedRecords,
     selectedRecordsMap,
     showCallout,
     toggleClaimDelayModal,
@@ -268,10 +269,12 @@ export const Claiming: React.FC = () => {
       if (errorResults.length) {
         handleClaimingPieceErrorResults(errorResults, showCallout);
       } else {
+        resetAllSelectedRecords();
         showCallout({ messageId: 'ui-claims.claiming.sendClaim.success.message' });
       }
 
-      resetSelectedRecords();
+      resetOtherSelectedRecordsByIds([Object.keys(selectedRecordsMap)[0]]);
+
       refetch();
       toggleClaimSendModal();
     } catch {
@@ -282,7 +285,8 @@ export const Claiming: React.FC = () => {
     }
   }, [
     refetch,
-    resetSelectedRecords,
+    resetAllSelectedRecords,
+    resetOtherSelectedRecordsByIds,
     selectedRecordsMap,
     sendClaims,
     showCallout,
