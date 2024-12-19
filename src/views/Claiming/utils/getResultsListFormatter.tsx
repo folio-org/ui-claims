@@ -15,18 +15,24 @@ type Claim = ACQ.Claim;
 type Formatter = Record<ClaimingListColumn & { select: 'select' }, (item: Claim) => React.ReactNode>;
 
 interface Params {
+  disabled: boolean;
   intl: IntlShape;
   onSelect: (item: Claim) => void;
-  disabled: boolean;
+  selectedRecordsDict: Record<string, ACQ.Claim>;
 }
 
-export const getResultsListFormatter = ({ intl, onSelect, disabled }: Params): Formatter => {
+export const getResultsListFormatter = ({
+  disabled,
+  intl,
+  onSelect,
+  selectedRecordsDict,
+}: Params): Formatter => {
   return {
     select: (item: Claim) => (
       <Checkbox
-        aria-label={intl.formatMessage({ id: 'claiming.results.columns.select' }, { term: item.id })}
+        aria-label={intl.formatMessage({ id: 'ui-claims.claiming.results.columns.select' }, { term: item.id })}
         type="checkbox"
-        // checked={..} TODO: https://folio-org.atlassian.net/browse/UICLAIM-3
+        checked={Boolean(selectedRecordsDict[item.id])}
         onChange={() => onSelect(item)}
         disabled={disabled}
       />

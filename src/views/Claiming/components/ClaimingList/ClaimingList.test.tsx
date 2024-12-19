@@ -35,6 +35,7 @@ const defaultProps: Parameters<typeof ClaimingList>[0] = {
   onNeedMoreData: jest.fn(),
   onSelect: jest.fn(),
   pagination: { limit: 10, offset: 0 },
+  selectedRecordsDict: {},
   totalCount: 0,
   visibleColumns: Object.keys(columnMapping) as ClaimingListColumn[],
   width: 100,
