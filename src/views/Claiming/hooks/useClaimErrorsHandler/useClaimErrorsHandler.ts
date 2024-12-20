@@ -22,7 +22,11 @@ interface HandlerOptions {
   defaultMessageId?: string,
 }
 
-export const useClaimErrorsHandler = () => {
+interface ClaimErrorsHandlerReturnType {
+  handlerErrorResponse: (response: Response, options?: HandlerOptions) => Promise<void>,
+}
+
+export const useClaimErrorsHandler = (): ClaimErrorsHandlerReturnType => {
   const showCallout = useShowCallout();
 
   const handlerErrorResponse = useCallback(async (response: Response, options?: HandlerOptions) => {
