@@ -56,3 +56,9 @@ export const ORDER_FORMAT_MATERIAL_TYPE_MAP = {
   [ORDER_FORMATS.PEMix]: ['poLine.eresource.materialType', 'poLine.physical.materialType'],
   [ORDER_FORMATS.other]: ['poLine.physical.materialType'],
 } as const;
+
+export const RESPONSE_ERROR_CODE = {
+  cannotFindPiecesWithLatestStatusToProcess: 'cannotFindPiecesWithLatestStatusToProcess',
+  genericError: 'genericError',
+  unableToGenerateClaimsForOrgNoIntegrationDetails: 'unableToGenerateClaimsForOrgNoIntegrationDetails',
+} as const;

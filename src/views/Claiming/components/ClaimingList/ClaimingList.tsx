@@ -45,6 +45,7 @@ interface Props {
   onNeedMoreData: () => void;
   onSelect: (item: Claim) => void;
   pagination: ACQ.Pagination;
+  selectedRecordsDict: Record<string, ACQ.Claim>;
   sortDirection?: ACQ.SortingOrder;
   sortingField?: keyof Claim;
   totalCount: number;
@@ -62,6 +63,7 @@ const ClaimingList: React.FC<Props> = ({
   onNeedMoreData,
   onSelect,
   pagination,
+  selectedRecordsDict,
   sortDirection,
   sortingField,
   totalCount,
@@ -84,11 +86,12 @@ const ClaimingList: React.FC<Props> = ({
 
   const formatter = useMemo(() => {
     return getResultsListFormatter({
+      disabled: isLoading,
       intl,
       onSelect,
-      disabled: isLoading,
+      selectedRecordsDict,
     });
-  }, [intl, onSelect, isLoading]);
+  }, [isLoading, intl, onSelect, selectedRecordsDict]);
 
   return (
     <>

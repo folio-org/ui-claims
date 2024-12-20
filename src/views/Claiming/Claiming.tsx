@@ -3,12 +3,16 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { useIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 import {
   useHistory,
   useLocation,
 } from 'react-router-dom';
 
+import { MenuSection } from '@folio/stripes/components';
 import {
   TitleManager,
   useNamespace,
@@ -19,36 +23,63 @@ import {
   useColumnManager,
 } from '@folio/stripes/smart-components';
 import {
+  DelayClaimActionMenuItem,
+  DelayClaimsModal,
   FiltersPane,
+  getClaimingIntervalFromDate,
   getFiltersCount,
+  MarkUnreceivableActionMenuItem,
   NoResultsMessage,
   PIECE_STATUS,
   ResetButton,
   RESULT_COUNT_INCREMENT,
   ResultsPane,
   SEARCH_PARAMETER,
+  SendClaimActionMenuItem,
+  SendClaimsModal,
   SingleSearchForm,
+  useClaimsDelay,
+  useClaimsSend,
   useFiltersReset,
   useFiltersToogle,
   useLocationFilters,
   useLocationSorting,
+  useModalToggle,
   usePagination,
+  usePiecesStatusBatchUpdate,
+  useRecordsSelect,
+  useShowCallout,
 } from '@folio/stripes-acq-components';
 
 import {
   ClaimingList,
   ClaimingListFilters,
+  MarkUnreceivableModal,
 } from './components';
 import {
   CLAIMING_LIST_COLUMNS,
   CLAIMING_LIST_SORTABLE_FIELDS,
   FILTERS,
+  RESPONSE_ERROR_CODE,
 } from './constants';
-import { useClaiming } from './hooks';
+import {
+  useClaimErrorsHandler,
+  useClaiming,
+} from './hooks';
 import { CLAIMING_SEARCHABLE_INDICES } from './search';
 import { getResultsListColumnMapping } from './utils';
 
 import type { ClaimingListColumn } from './types';
+
+interface DelayClaimsFormValues {
+  claimingDate: string;
+}
+
+interface SendClaimsFormValues {
+  claimingDate: string;
+  externalNote: string;
+  internalNote: string;
+}
 
 const resetData = noop;
 
@@ -72,7 +103,11 @@ export const Claiming: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
   const [namespace] = useNamespace({ key: 'filters' });
+  const showCallout = useShowCallout();
   const { isFiltersOpened, toggleFilters } = useFiltersToogle(namespace);
+  const [isClaimDelayModalOpen, toggleClaimDelayModal] = useModalToggle();
+  const [isClaimSendModalOpen, toggleClaimSendModal] = useModalToggle();
+  const [isMarkUnreceivableModalOpen, toggleMarkUnreceivableModalOpen] = useModalToggle();
 
   const [
     filters,
@@ -94,8 +129,24 @@ export const Claiming: React.FC = () => {
   const { pagination, changePage } = usePagination({ limit: RESULT_COUNT_INCREMENT, offset: 0 });
 
   const {
+    isLoading: isSendClaimLoading,
+    sendClaims,
+  } = useClaimsSend();
+
+  const {
+    delayClaims,
+    isLoading: isDelayClaimsLoading,
+  } = useClaimsDelay();
+
+  const {
+    isLoading: isPiecesStatusUpdateLoading,
+    updatePiecesStatus,
+  } = usePiecesStatusBatchUpdate();
+
+  const {
     claims,
     isFetching,
+    refetch,
     totalRecords,
   } = useClaiming({
     filters,
@@ -105,21 +156,26 @@ export const Claiming: React.FC = () => {
 
   useFiltersReset(resetFilters);
 
-  const selectAll = useCallback(() => {
-    console.log('all selected'); // TODO: https://folio-org.atlassian.net/browse/UICLAIM-3
-  }, []);
+  const {
+    allRecordsSelected,
+    resetAllSelectedRecords,
+    resetOtherSelectedRecordsByIds,
+    selectedRecordsLength,
+    selectedRecordsMap,
+    selectRecord,
+    toggleSelectAll,
+  } = useRecordsSelect({ records: claims });
 
-  const selectOne = useCallback(() => {
-    console.log('one selected'); // TODO: https://folio-org.atlassian.net/browse/UICLAIM-3
-  }, []);
+  const { handlerErrorResponse } = useClaimErrorsHandler();
 
   const columnMapping = useMemo(() => {
     return getResultsListColumnMapping({
-      intl,
-      selectAll,
       disabled: isFetching,
+      intl,
+      isAllSelected: allRecordsSelected,
+      selectAll: toggleSelectAll,
     });
-  }, [intl, isFetching, selectAll]);
+  }, [allRecordsSelected, intl, isFetching, toggleSelectAll]);
 
   const {
     toggleColumn,
@@ -129,15 +185,43 @@ export const Claiming: React.FC = () => {
   const queryFilter = filters?.[SEARCH_PARAMETER];
   const pageTitle = queryFilter ? intl.formatMessage({ id: 'ui-claims.document.title.search' }, { query: queryFilter }) : null;
 
-  const renderActionMenu = ({ onToggle /* TODO: https://folio-org.atlassian.net/browse/UICLAIM-3 */ }: { onToggle: (key: string) => void }) => {
+  const renderActionMenu = ({ onToggle }: { onToggle: (e?: Event) => void }) => {
     return (
-      <ColumnManagerMenu
-        prefix="claiming"
-        columnMapping={columnMapping}
-        visibleColumns={visibleColumns}
-        toggleColumn={toggleColumn}
-        excludeColumns={[CLAIMING_LIST_COLUMNS.select]}
-      />
+      <>
+        <MenuSection>
+          <SendClaimActionMenuItem
+            disabled={!selectedRecordsLength}
+            onClick={(e) => {
+              onToggle(e);
+              toggleClaimSendModal();
+            }}
+          />
+
+          <DelayClaimActionMenuItem
+            disabled={!selectedRecordsLength}
+            onClick={(e) => {
+              onToggle(e);
+              toggleClaimDelayModal();
+            }}
+          />
+
+          <MarkUnreceivableActionMenuItem
+            disabled={!selectedRecordsLength}
+            onClick={(e) => {
+              onToggle(e);
+              toggleMarkUnreceivableModalOpen();
+            }}
+          />
+        </MenuSection>
+
+        <ColumnManagerMenu
+          prefix="claiming"
+          columnMapping={columnMapping}
+          visibleColumns={visibleColumns}
+          toggleColumn={toggleColumn}
+          excludeColumns={[CLAIMING_LIST_COLUMNS.select]}
+        />
+      </>
     );
   };
 
@@ -149,6 +233,111 @@ export const Claiming: React.FC = () => {
       toggleFilters={toggleFilters}
     />
   );
+
+  const onClaimsSend = useCallback(async ({
+    claimingDate,
+    externalNote,
+    internalNote,
+  }: SendClaimsFormValues) => {
+    try {
+      await sendClaims({
+        data: {
+          claimingInterval: getClaimingIntervalFromDate(claimingDate),
+          claimingPieceIds: Object.keys(selectedRecordsMap),
+          externalNote,
+          internalNote,
+        },
+      });
+
+      resetAllSelectedRecords();
+      showCallout({ messageId: 'ui-claims.claiming.sendClaim.success.message' });
+    } catch (errors) {
+      await handlerErrorResponse(
+        errors.response as Response,
+        {
+          callbacksDict: {
+            [RESPONSE_ERROR_CODE.unableToGenerateClaimsForOrgNoIntegrationDetails]: ({ pieceIds }) => {
+              resetOtherSelectedRecordsByIds(pieceIds);
+            },
+            [RESPONSE_ERROR_CODE.cannotFindPiecesWithLatestStatusToProcess]: ({ pieceIds }) => {
+              resetOtherSelectedRecordsByIds(pieceIds);
+            },
+          },
+          defaultMessageId: 'ui-claims.claiming.sendClaim.error.message',
+        },
+      );
+    }
+
+    refetch();
+    toggleClaimSendModal();
+  }, [
+    handlerErrorResponse,
+    refetch,
+    resetAllSelectedRecords,
+    resetOtherSelectedRecordsByIds,
+    selectedRecordsMap,
+    sendClaims,
+    showCallout,
+    toggleClaimSendModal,
+  ]);
+
+  const onClaimsDelay = useCallback(async ({ claimingDate }: DelayClaimsFormValues) => {
+    try {
+      await delayClaims({
+        claimingInterval: getClaimingIntervalFromDate(claimingDate),
+        pieceIds: Object.keys(selectedRecordsMap),
+      });
+
+      resetAllSelectedRecords();
+      showCallout({ messageId: 'ui-claims.claiming.delayClaim.success.message' });
+    } catch (errors) {
+      await handlerErrorResponse(
+        errors.response as Response,
+        { defaultMessageId: 'ui-claims.claiming.delayClaim.error.message' },
+      );
+    }
+
+    refetch();
+    toggleClaimDelayModal();
+  }, [
+    delayClaims,
+    handlerErrorResponse,
+    refetch,
+    resetAllSelectedRecords,
+    selectedRecordsMap,
+    showCallout,
+    toggleClaimDelayModal,
+  ]);
+
+  const onMarkUnreceivable = useCallback(async () => {
+    try {
+      await updatePiecesStatus({
+        data: {
+          pieceIds: Object.keys(selectedRecordsMap),
+          receivingStatus: PIECE_STATUS.unreceivable,
+        },
+      });
+
+      resetAllSelectedRecords();
+      showCallout({ messageId: 'ui-claims.claiming.markUnreceivable.success.message' });
+    } catch (errors) {
+      await handlerErrorResponse(
+        errors.response as Response,
+        { defaultMessageId: 'ui-claims.claiming.markUnreceivable.error.message' },
+      );
+    }
+
+    refetch();
+    toggleMarkUnreceivableModalOpen();
+  }, [
+    handlerErrorResponse,
+    refetch,
+    resetAllSelectedRecords,
+    selectedRecordsMap,
+    showCallout,
+    toggleMarkUnreceivableModalOpen,
+    updatePiecesStatus,
+  ]);
 
   return (
     <div>
@@ -207,8 +396,9 @@ export const Claiming: React.FC = () => {
               isLoading={isFetching}
               onHeaderClick={changeSorting}
               onNeedMoreData={changePage}
-              onSelect={selectOne}
+              onSelect={selectRecord}
               pagination={pagination}
+              selectedRecordsDict={selectedRecordsMap}
               sortDirection={sortingDirection}
               sortingField={sortingField}
               totalCount={totalRecords}
@@ -218,6 +408,36 @@ export const Claiming: React.FC = () => {
           ))}
         </ResultsPane>
       </PersistedPaneset>
+
+      <DelayClaimsModal
+        claimsCount={selectedRecordsLength}
+        disabled={isDelayClaimsLoading}
+        open={isClaimDelayModalOpen}
+        onCancel={toggleClaimDelayModal}
+        onSubmit={onClaimsDelay}
+      />
+
+      <SendClaimsModal
+        claimsCount={selectedRecordsLength}
+        disabled={isSendClaimLoading}
+        message={(
+          <FormattedMessage
+            id="ui-claims.claiming.sendClaim.modal.message"
+            values={{ count: selectedRecordsLength }}
+          />
+        )}
+        open={isClaimSendModalOpen}
+        onCancel={toggleClaimSendModal}
+        onSubmit={onClaimsSend}
+      />
+
+      <MarkUnreceivableModal
+        claimsCount={selectedRecordsLength}
+        disabled={isPiecesStatusUpdateLoading}
+        open={isMarkUnreceivableModalOpen}
+        onCancel={toggleMarkUnreceivableModalOpen}
+        onSubmit={onMarkUnreceivable}
+      />
     </div>
   );
 };
