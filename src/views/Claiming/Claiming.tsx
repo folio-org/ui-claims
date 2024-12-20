@@ -60,13 +60,14 @@ import {
   CLAIMING_LIST_COLUMNS,
   CLAIMING_LIST_SORTABLE_FIELDS,
   FILTERS,
+  RESPONSE_ERROR_CODE,
 } from './constants';
-import { useClaiming } from './hooks';
-import { CLAIMING_SEARCHABLE_INDICES } from './search';
 import {
-  getResultsListColumnMapping,
-  handleClaimingPieceErrorResults,
-} from './utils';
+  useClaimErrorsHandler,
+  useClaiming,
+} from './hooks';
+import { CLAIMING_SEARCHABLE_INDICES } from './search';
+import { getResultsListColumnMapping } from './utils';
 
 import type { ClaimingListColumn } from './types';
 
@@ -165,6 +166,8 @@ export const Claiming: React.FC = () => {
     toggleSelectAll,
   } = useRecordsSelect({ records: claims });
 
+  const { handlerErrorResponse } = useClaimErrorsHandler();
+
   const columnMapping = useMemo(() => {
     return getResultsListColumnMapping({
       disabled: isFetching,
@@ -237,7 +240,7 @@ export const Claiming: React.FC = () => {
     internalNote,
   }: SendClaimsFormValues) => {
     try {
-      const { claimingPieceResults } = await sendClaims({
+      await sendClaims({
         data: {
           claimingInterval: getClaimingIntervalFromDate(claimingDate),
           claimingPieceIds: Object.keys(selectedRecordsMap),
@@ -246,26 +249,29 @@ export const Claiming: React.FC = () => {
         },
       });
 
-      const errorResults = claimingPieceResults.filter((val) => 'error' in val);
-
-      if (errorResults.length) {
-        handleClaimingPieceErrorResults(errorResults, showCallout);
-      } else {
-        resetAllSelectedRecords();
-        showCallout({ messageId: 'ui-claims.claiming.sendClaim.success.message' });
-      }
-
-      resetOtherSelectedRecordsByIds([Object.keys(selectedRecordsMap)[0]]);
-
-      refetch();
-      toggleClaimSendModal();
-    } catch {
-      showCallout({
-        messageId: 'ui-claims.claiming.sendClaim.error.message',
-        type: 'error',
-      });
+      resetAllSelectedRecords();
+      showCallout({ messageId: 'ui-claims.claiming.sendClaim.success.message' });
+    } catch (errors) {
+      await handlerErrorResponse(
+        errors.response as Response,
+        {
+          callbacksDict: {
+            [RESPONSE_ERROR_CODE.unableToGenerateClaimsForOrgNoIntegrationDetails]: ({ pieceIds }) => {
+              resetOtherSelectedRecordsByIds(pieceIds);
+            },
+            [RESPONSE_ERROR_CODE.cannotFindPiecesWithLatestStatusToProcess]: ({ pieceIds }) => {
+              resetOtherSelectedRecordsByIds(pieceIds);
+            },
+          },
+          defaultMessageId: 'ui-claims.claiming.sendClaim.error.message',
+        },
+      );
     }
+
+    refetch();
+    toggleClaimSendModal();
   }, [
+    handlerErrorResponse,
     refetch,
     resetAllSelectedRecords,
     resetOtherSelectedRecordsByIds,
@@ -283,17 +289,19 @@ export const Claiming: React.FC = () => {
       });
 
       resetAllSelectedRecords();
-      refetch();
-      toggleClaimDelayModal();
       showCallout({ messageId: 'ui-claims.claiming.delayClaim.success.message' });
-    } catch {
-      showCallout({
-        messageId: 'ui-claims.claiming.delayClaim.error.message',
-        type: 'error',
-      });
+    } catch (errors) {
+      await handlerErrorResponse(
+        errors.response as Response,
+        { defaultMessageId: 'ui-claims.claiming.delayClaim.error.message' },
+      );
     }
+
+    refetch();
+    toggleClaimDelayModal();
   }, [
     delayClaims,
+    handlerErrorResponse,
     refetch,
     resetAllSelectedRecords,
     selectedRecordsMap,
@@ -311,16 +319,18 @@ export const Claiming: React.FC = () => {
       });
 
       resetAllSelectedRecords();
-      refetch();
-      toggleMarkUnreceivableModalOpen();
       showCallout({ messageId: 'ui-claims.claiming.markUnreceivable.success.message' });
-    } catch (error) {
-      showCallout({
-        messageId: 'ui-claims.claiming.markUnreceivable.error.message',
-        type: 'error',
-      });
+    } catch (errors) {
+      await handlerErrorResponse(
+        errors.response as Response,
+        { defaultMessageId: 'ui-claims.claiming.markUnreceivable.error.message' },
+      );
     }
+
+    refetch();
+    toggleMarkUnreceivableModalOpen();
   }, [
+    handlerErrorResponse,
     refetch,
     resetAllSelectedRecords,
     selectedRecordsMap,
