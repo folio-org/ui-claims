@@ -7,6 +7,6 @@ export type CallbackFn = (...args: unknown[]) => unknown;
 export type CallbacksDict = Partial<Record<ResponseErrorCode, CallbackFn>>;
 
 export interface ErrorHandlingStrategyBaseParams {
-  callback: CallbackFn,
+  callback?: CallbackFn,
   showCallout: ReturnType<typeof useShowCallout>,
 }
