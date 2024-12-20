@@ -62,6 +62,7 @@ describe('Claiming', () => {
   beforeEach(() => {
     (useClaiming as jest.Mock).mockReturnValue({
       claims: [claim],
+      refetch: jest.fn(),
     });
     (useClaimsDelay as jest.Mock).mockReturnValue({ delayClaims });
     (useClaimsSend as jest.Mock).mockReturnValue({ sendClaims });
