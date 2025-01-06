@@ -18,6 +18,7 @@ export const CLAIMING_LIST_COLUMNS = {
 
 export const CLAIMING_LIST_SORTABLE_FIELDS = [
   CLAIMING_LIST_COLUMNS.receiptDate,
+  CLAIMING_LIST_COLUMNS.vendorCode,
   CLAIMING_LIST_COLUMNS.receivingStatus,
   CLAIMING_LIST_COLUMNS.displaySummary,
   CLAIMING_LIST_COLUMNS.chronology,

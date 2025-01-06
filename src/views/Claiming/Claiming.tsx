@@ -35,6 +35,7 @@ import {
   RESULT_COUNT_INCREMENT,
   ResultsPane,
   SEARCH_PARAMETER,
+  GroupByOrgActionMenuItem,
   SendClaimActionMenuItem,
   SendClaimsModal,
   SingleSearchForm,
@@ -189,6 +190,13 @@ export const Claiming: React.FC = () => {
     return (
       <>
         <MenuSection>
+          <GroupByOrgActionMenuItem
+            onClick={(e: Event | undefined) => {
+              onToggle(e);
+              changeSorting(e, { name: CLAIMING_LIST_COLUMNS.vendorCode });
+            }}
+          />
+
           <SendClaimActionMenuItem
             disabled={!selectedRecordsLength}
             onClick={(e) => {
