@@ -19,7 +19,7 @@
 ## Frontend
 * [ ] If provided, End-to-end tests must be written in an [officially approved technology](https://wiki.folio.org/display/TC/Officially+Supported+Technologies)
   * -_note: while it's strongly recommended that modules implement integration tests, it's not a requirement_
-  * -_note: these tests are defined in https://github.com/folio-org/stripes-testing_
+  * - note: AQA have other priorities as for now :( 
 * [x] Have i18n support via react-intl and an `en.json` file with English texts
 * [x] Have WCAG 2.1 AA compliance as measured by a current major version of axe DevTools Chrome Extension
 * [x] Use the latest release of Stripes at the time of evaluation
