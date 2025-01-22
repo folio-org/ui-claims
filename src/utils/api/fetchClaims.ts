@@ -9,29 +9,12 @@ import {
   fetchOrganizationsByIds,
 } from '@folio/stripes-acq-components';
 
+import { fetchWrapperPieces } from './fetchWrapperPieces';
+
 interface DataShape {
   claims: ACQ.Claim[];
   totalRecords: number;
 }
-
-interface WrapperPiece {
-    piece: ACQ.Piece;
-    poLine: ACQ.OrderLine;
-    purchaseOrder: ACQ.Order;
-    title: ACQ.Title;
-    vendorId: string;
-}
-interface WrapperDataShape {
-  wrapperPieces: WrapperPiece[];
-  totalRecords: number;
-}
-
-const ORDER_WRAPPER_PIECES_API = 'orders/wrapper-pieces';
-
-const fetchWrapperPieces =
-(httpClient: HTTPClient) => async (options: HTTPClientOptions): Promise<WrapperDataShape> => {
-  return httpClient.get(ORDER_WRAPPER_PIECES_API, options).json();
-};
 
 export const fetchClaims = (httpClient: HTTPClient) => async (options: HTTPClientOptions): Promise<DataShape> => {
   const { signal } = options;
