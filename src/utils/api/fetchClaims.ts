@@ -6,11 +6,7 @@ import type {
 } from '@folio/stripes-acq-components';
 
 import {
-  fetchPieces,
-  fetchOrderLinesByIds,
-  fetchOrdersByIds,
   fetchOrganizationsByIds,
-  fetchReceivingTitlesByIds,
 } from '@folio/stripes-acq-components';
 
 interface DataShape {
@@ -18,40 +14,46 @@ interface DataShape {
   totalRecords: number;
 }
 
+interface WrapperPiece {
+    piece: ACQ.Piece;
+    poLine: ACQ.OrderLine;
+    purchaseOrder: ACQ.Order;
+    title: ACQ.Title;
+    vendorId: string;
+}
+interface WrapperDataShape {
+  wrapperPieces: WrapperPiece[];
+  totalRecords: number;
+}
+
+const ORDER_WRAPPER_PIECES_API = 'orders/wrapper-pieces';
+
+const fetchWrapperPieces =
+(httpClient: HTTPClient) => async (options: HTTPClientOptions): Promise<WrapperDataShape> => {
+  return httpClient.get(ORDER_WRAPPER_PIECES_API, options).json();
+};
+
 export const fetchClaims = (httpClient: HTTPClient) => async (options: HTTPClientOptions): Promise<DataShape> => {
   const { signal } = options;
+  const { wrapperPieces, totalRecords } = await fetchWrapperPieces(httpClient)(options);
 
-  const { pieces, totalRecords } = await fetchPieces(httpClient)(options);
+  const organizationIdsSet = new Set<string>(wrapperPieces.map(({ vendorId }) => vendorId));
+  const { organizations } = await fetchOrganizationsByIds(httpClient)(
+    Array.from(organizationIdsSet), { signal },
+  );
 
-  const titleIdsSet = new Set(pieces.map(({ titleId }) => titleId));
-  const poLineIdsSet = new Set(pieces.map(({ poLineId }) => poLineId));
-
-  const [{ titles }, { poLines }] = await Promise.all([
-    fetchReceivingTitlesByIds(httpClient)(Array.from(titleIdsSet), { signal }),
-    fetchOrderLinesByIds(httpClient)(Array.from(poLineIdsSet), { signal }),
-  ]);
-
-  const orderIdsSet = new Set(poLines.map(({ purchaseOrderId }) => purchaseOrderId));
-  const { purchaseOrders } = await fetchOrdersByIds(httpClient)(Array.from(orderIdsSet), { signal });
-
-  const organizationIdsSet = new Set(purchaseOrders.map(({ vendor }) => vendor));
-  const { organizations } = await fetchOrganizationsByIds(httpClient)(Array.from(organizationIdsSet), { signal });
-
-  const purchaseOrdersDict = keyBy(purchaseOrders, 'id');
-  const poLinesDict = keyBy(poLines, 'id');
-  const titlesDict = keyBy(titles, 'id');
   const organizationsDict = keyBy(organizations, 'id');
 
   return {
-    claims: pieces.map((piece) => {
-      const vendor = organizationsDict[purchaseOrdersDict[poLinesDict[piece.poLineId].purchaseOrderId].vendor];
+    claims: wrapperPieces.map(({ piece, vendorId, poLine, title }) => {
+      const vendor = organizationsDict[vendorId];
 
       return {
         ...piece,
-        title: titlesDict[piece.titleId].title,
+        title: title.title,
         vendorCode: vendor.code,
         vendorName: vendor.name,
-        poLineNumber: poLinesDict[piece.poLineId].poLineNumber,
+        poLineNumber: poLine.poLineNumber,
       };
     }),
     totalRecords,

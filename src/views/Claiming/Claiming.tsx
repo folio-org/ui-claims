@@ -35,7 +35,6 @@ import {
   RESULT_COUNT_INCREMENT,
   ResultsPane,
   SEARCH_PARAMETER,
-  GroupByOrgActionMenuItem,
   SendClaimActionMenuItem,
   SendClaimsModal,
   SingleSearchForm,
@@ -56,9 +55,11 @@ import {
   ClaimingList,
   ClaimingListFilters,
   MarkUnreceivableModal,
+  GroupByOrgActionMenuItem,
 } from './components';
 import {
   CLAIMING_LIST_COLUMNS,
+  CLAIMING_HIDDEN_LIST_COLUMNS,
   CLAIMING_LIST_SORTABLE_FIELDS,
   FILTERS,
   RESPONSE_ERROR_CODE,
@@ -191,9 +192,9 @@ export const Claiming: React.FC = () => {
       <>
         <MenuSection>
           <GroupByOrgActionMenuItem
-            onClick={(e: Event | undefined) => {
-              onToggle(e);
-              changeSorting(e, { name: CLAIMING_LIST_COLUMNS.vendorCode });
+            onClick={(e) => {
+              onToggle(e as unknown as Event | undefined);
+              changeSorting(e, { name: CLAIMING_HIDDEN_LIST_COLUMNS.vendorId });
             }}
           />
 
