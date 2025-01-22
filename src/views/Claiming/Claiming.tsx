@@ -186,6 +186,11 @@ export const Claiming: React.FC = () => {
 
   const queryFilter = filters?.[SEARCH_PARAMETER];
   const pageTitle = queryFilter ? intl.formatMessage({ id: 'ui-claims.document.title.search' }, { query: queryFilter }) : null;
+  const sortByOrg = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (sortingField !== CLAIMING_HIDDEN_LIST_COLUMNS.vendorId) {
+      changeSorting(e, { name: CLAIMING_HIDDEN_LIST_COLUMNS.vendorId });
+    }
+  };
 
   const renderActionMenu = ({ onToggle }: { onToggle: (e?: Event) => void }) => {
     return (
@@ -194,7 +199,7 @@ export const Claiming: React.FC = () => {
           <GroupByOrgActionMenuItem
             onClick={(e) => {
               onToggle(e as unknown as Event | undefined);
-              changeSorting(e, { name: CLAIMING_HIDDEN_LIST_COLUMNS.vendorId });
+              sortByOrg(e);
             }}
           />
 
