@@ -6,9 +6,9 @@
   "appMenu.claimingAppSearch": "Claiming app Search",
 
   "search.index.keyword": "Keyword",
-  "search.index.titles.title": "Title (Receiving titles)",
+  "search.index.title.title": "Title (Receiving titles)",
   "search.index.poLine.titleOrPackage": "Package (POL Package name)",
-  "search.index.titles.productIds": "Product ID (For the specific title or the package)",
+  "search.index.title.productIds": "Product ID (For the specific title or the package)",
   "search.index.purchaseOrder.poNumber": "PO number",
   "search.index.poLine.poLineNumber": "POL number",
   "search.index.poLine.vendorDetail.referenceNumbers": "Vendor reference number",

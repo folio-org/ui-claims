@@ -19,9 +19,9 @@ import {
 import type { ActiveFilters } from './types';
 
 export const CLAIMING_SEARCHABLE_INDICES = [
-  'titles.title',
+  'title.title',
   'poLine.titleOrPackage',
-  'titles.productIds',
+  'title.productIds',
   'purchaseOrder.poNumber',
   'poLine.poLineNumber',
   'poLine.vendorDetail.referenceNumbers',
