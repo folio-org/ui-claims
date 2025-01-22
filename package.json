@@ -98,6 +98,7 @@
       "orders-storage.settings": "1.0",
       "organizations.organizations": "1.0",
       "pieces": "3.1",
+      "pieces.send-claims": "1.0",
       "search": "1.0",
       "titles": "1.2",
       "users": "16.0"
@@ -109,7 +110,7 @@
       },
       {
         "permissionName": "ui-claims.claiming.view",
-        "displayName": "Claims: View claiming",
+        "displayName": "Claims: View claims",
         "visible": true,
         "subPermissions": [
           "module.claims.enabled"
