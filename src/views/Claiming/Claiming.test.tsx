@@ -11,12 +11,16 @@ import {
   useClaimsDelay,
   useClaimsSend,
   usePiecesStatusBatchUpdate,
+  useLocationSorting,
 } from '@folio/stripes-acq-components';
 import { dayjs } from '@folio/stripes/components';
 
 import { claim } from 'fixtures';
 import { Claiming } from './Claiming';
 import { useClaiming } from './hooks';
+import {
+  CLAIMING_HIDDEN_LIST_COLUMNS,
+} from './constants';
 
 jest.mock('@folio/stripes/smart-components', () => ({
   ...jest.requireActual('@folio/stripes/smart-components'),
@@ -41,6 +45,7 @@ jest.mock('@folio/stripes-acq-components', () => ({
   useClaimsSend: jest.fn(),
   useFiltersToogle: jest.fn(() => ({ isFiltersOpened: true, toggleFilters: jest.fn() })),
   usePiecesStatusBatchUpdate: jest.fn(),
+  useLocationSorting: jest.fn(),
 }));
 jest.mock('./hooks', () => ({
   ...jest.requireActual('./hooks'),
@@ -58,6 +63,7 @@ describe('Claiming', () => {
   const delayClaims = jest.fn();
   const sendClaims = jest.fn();
   const updatePiecesStatus = jest.fn();
+  const changeSorting = jest.fn();
 
   beforeEach(() => {
     (useClaiming as jest.Mock).mockReturnValue({
@@ -67,6 +73,11 @@ describe('Claiming', () => {
     (useClaimsDelay as jest.Mock).mockReturnValue({ delayClaims });
     (useClaimsSend as jest.Mock).mockReturnValue({ sendClaims });
     (usePiecesStatusBatchUpdate as jest.Mock).mockReturnValue({ updatePiecesStatus });
+    (useLocationSorting as jest.Mock).mockReturnValue([
+        null,
+        null,
+        changeSorting,
+    ]);
   });
 
   afterEach(() => {
@@ -77,6 +88,19 @@ describe('Claiming', () => {
     renderComponent();
 
     expect(screen.getByText('ui-claims.claiming.results.title')).toBeInTheDocument();
+  });
+
+  describe('Group by Org', () => {
+    it('should sort group by org', async () => {
+      const { container } = renderComponent();
+
+      await act(async () => {
+        await userEvent.click(container.querySelector('[data-test-pane-header-actions-button]'));
+        await userEvent.click(screen.getByTestId('group-by-org-button'));
+      });
+
+      expect(changeSorting).toHaveBeenCalledWith(expect.anything(), { name: CLAIMING_HIDDEN_LIST_COLUMNS.vendorId });
+    });
   });
 
   describe('Send claim', () => {
