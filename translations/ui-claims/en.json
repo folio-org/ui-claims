@@ -62,5 +62,5 @@
   "error.code.cannotFindPiecesWithLatestStatusToProcess": "Cannot find pieces with \"Late\" status to process.",
   "error.code.unableToGenerateClaimsForOrgNoIntegrationDetails": "Unable to generate claims for <b>{orgCodes}</b> because no claim integrations exist.",
   
-  "permission.claiming.view": "Claims: View claiming"
+  "permission.claiming.view": "Claims: View claims"
 }

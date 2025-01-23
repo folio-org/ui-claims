@@ -206,29 +206,33 @@ export const Claiming: React.FC = () => {
             />
           </IfPermission>
 
-          <SendClaimActionMenuItem
-            disabled={!selectedRecordsLength}
-            onClick={(e) => {
-              onToggle(e);
-              toggleClaimSendModal();
-            }}
-          />
+          <IfPermission perm="pieces.send-claims.collection.post">
+            <SendClaimActionMenuItem
+              disabled={!selectedRecordsLength}
+              onClick={(e) => {
+                onToggle(e);
+                toggleClaimSendModal();
+              }}
+            />
+          </IfPermission>
 
-          <DelayClaimActionMenuItem
-            disabled={!selectedRecordsLength}
-            onClick={(e) => {
-              onToggle(e);
-              toggleClaimDelayModal();
-            }}
-          />
+          <IfPermission perm="orders.pieces.collection.put">
+            <DelayClaimActionMenuItem
+              disabled={!selectedRecordsLength}
+              onClick={(e) => {
+                onToggle(e);
+                toggleClaimDelayModal();
+              }}
+            />
 
-          <MarkUnreceivableActionMenuItem
-            disabled={!selectedRecordsLength}
-            onClick={(e) => {
-              onToggle(e);
-              toggleMarkUnreceivableModalOpen();
-            }}
-          />
+            <MarkUnreceivableActionMenuItem
+              disabled={!selectedRecordsLength}
+              onClick={(e) => {
+                onToggle(e);
+                toggleMarkUnreceivableModalOpen();
+              }}
+            />
+          </IfPermission>
         </MenuSection>
 
         <ColumnManagerMenu
