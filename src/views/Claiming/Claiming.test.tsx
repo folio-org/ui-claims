@@ -10,17 +10,15 @@ import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import {
   useClaimsDelay,
   useClaimsSend,
-  usePiecesStatusBatchUpdate,
   useLocationSorting,
+  usePiecesStatusBatchUpdate,
 } from '@folio/stripes-acq-components';
 import { dayjs } from '@folio/stripes/components';
 
 import { claim } from 'fixtures';
 import { Claiming } from './Claiming';
+import { CLAIMING_HIDDEN_LIST_COLUMNS } from './constants';
 import { useClaiming } from './hooks';
-import {
-  CLAIMING_HIDDEN_LIST_COLUMNS,
-} from './constants';
 
 jest.mock('@folio/stripes/smart-components', () => ({
   ...jest.requireActual('@folio/stripes/smart-components'),
@@ -74,9 +72,9 @@ describe('Claiming', () => {
     (useClaimsSend as jest.Mock).mockReturnValue({ sendClaims });
     (usePiecesStatusBatchUpdate as jest.Mock).mockReturnValue({ updatePiecesStatus });
     (useLocationSorting as jest.Mock).mockReturnValue([
-        null,
-        null,
-        changeSorting,
+      null,
+      null,
+      changeSorting,
     ]);
   });
 

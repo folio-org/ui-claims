@@ -14,6 +14,7 @@ import {
 
 import { MenuSection } from '@folio/stripes/components';
 import {
+  IfPermission,
   TitleManager,
   useNamespace,
 } from '@folio/stripes/core';
@@ -54,12 +55,12 @@ import {
 import {
   ClaimingList,
   ClaimingListFilters,
-  MarkUnreceivableModal,
   GroupByOrgActionMenuItem,
+  MarkUnreceivableModal,
 } from './components';
 import {
-  CLAIMING_LIST_COLUMNS,
   CLAIMING_HIDDEN_LIST_COLUMNS,
+  CLAIMING_LIST_COLUMNS,
   CLAIMING_LIST_SORTABLE_FIELDS,
   FILTERS,
   RESPONSE_ERROR_CODE,
@@ -196,12 +197,14 @@ export const Claiming: React.FC = () => {
     return (
       <>
         <MenuSection>
-          <GroupByOrgActionMenuItem
-            onClick={(e) => {
-              onToggle(e as unknown as Event | undefined);
-              sortByOrg(e);
-            }}
-          />
+          <IfPermission perm="orders.wrapper-pieces.collection.get">
+            <GroupByOrgActionMenuItem
+              onClick={(e) => {
+                onToggle(e as unknown as Event | undefined);
+                sortByOrg(e);
+              }}
+            />
+          </IfPermission>
 
           <SendClaimActionMenuItem
             disabled={!selectedRecordsLength}

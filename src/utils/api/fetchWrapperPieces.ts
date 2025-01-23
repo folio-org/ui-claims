@@ -6,11 +6,11 @@ import type {
 import { ORDER_WRAPPER_PIECES_API } from '../../constants';
 
 interface WrapperPiece {
-    piece: ACQ.Piece;
-    poLine: ACQ.OrderLine;
-    purchaseOrder: ACQ.Order;
-    title: ACQ.Title;
-    vendorId: string;
+  piece: ACQ.Piece;
+  poLine: ACQ.OrderLine;
+  purchaseOrder: ACQ.Order;
+  title: ACQ.Title;
+  vendorId: string;
 }
 
 interface WrapperDataShape {
@@ -18,7 +18,8 @@ interface WrapperDataShape {
   totalRecords: number;
 }
 
-export const fetchWrapperPieces =
-(httpClient: HTTPClient) => async (options: HTTPClientOptions): Promise<WrapperDataShape> => {
-  return httpClient.get(ORDER_WRAPPER_PIECES_API, options).json();
+export const fetchWrapperPieces = (httpClient: HTTPClient) => {
+  return async (options: HTTPClientOptions): Promise<WrapperDataShape> => {
+    return httpClient.get(ORDER_WRAPPER_PIECES_API, options).json();
+  };
 };
