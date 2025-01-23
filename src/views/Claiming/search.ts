@@ -11,6 +11,7 @@ import {
 } from '@folio/stripes-acq-components';
 
 import {
+  CLAIMING_LIST_COLUMNS,
   FILTERS,
   ORDER_FORMAT_MATERIAL_TYPE_MAP,
 } from './constants';
@@ -18,9 +19,9 @@ import {
 import type { ActiveFilters } from './types';
 
 export const CLAIMING_SEARCHABLE_INDICES = [
-  'titles.title',
+  'title.title',
   'poLine.titleOrPackage',
-  'titles.productIds',
+  'title.productIds',
   'purchaseOrder.poNumber',
   'poLine.poLineNumber',
   'poLine.vendorDetail.referenceNumbers',
@@ -93,7 +94,13 @@ export const buildClaimingQuery = (activeFilters: ActiveFilters, sorting: ACQ.So
   );
 
   const filterQuery = compact([filtersFilterQuery, materialTypeFilterQuery]).join(' and ') || ALL_RECORDS_CQL;
-  const sortingQuery = buildSortingQuery(sorting) || 'sortby receiptDate/sort.ascending';
+  const sortingQuery = buildSortingQuery(sorting, {
+    [CLAIMING_LIST_COLUMNS.receiptDate]: [`piece.${CLAIMING_LIST_COLUMNS.receiptDate}`],
+    [CLAIMING_LIST_COLUMNS.receivingStatus]: [`piece.${CLAIMING_LIST_COLUMNS.receivingStatus}`],
+    [CLAIMING_LIST_COLUMNS.displaySummary]: [`piece.${CLAIMING_LIST_COLUMNS.displaySummary}`],
+    [CLAIMING_LIST_COLUMNS.chronology]: [`piece.${CLAIMING_LIST_COLUMNS.chronology}`],
+    [CLAIMING_LIST_COLUMNS.enumeration]: [`piece.${CLAIMING_LIST_COLUMNS.enumeration}`],
+  }) || 'sortby piece.receiptDate/sort.ascending';
 
   return connectQuery(filterQuery, sortingQuery);
 };

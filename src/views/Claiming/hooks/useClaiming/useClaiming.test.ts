@@ -38,7 +38,7 @@ describe('useClaiming', () => {
       {
         limit: options.pagination.limit,
         offset: options.pagination.offset,
-        query: '(cql.allRecords=1) sortby receiptDate/sort.ascending',
+        query: '(cql.allRecords=1) sortby piece.receiptDate/sort.ascending',
       },
       {
         breakWithDefaults: true,
@@ -71,10 +71,10 @@ describe('useClaiming', () => {
         limit: options.pagination.limit,
         offset: options.pagination.offset,
         query: (`
-          ((titles.title=="*search-query*" or poLine.titleOrPackage=="*search-query*" or titles.productIds=="*search-query*" or purchaseOrder.poNumber=="*search-query*" or poLine.poLineNumber=="*search-query*" or poLine.vendorDetail.referenceNumbers=="*search-query*")
+          ((title.title=="*search-query*" or poLine.titleOrPackage=="*search-query*" or title.productIds=="*search-query*" or purchaseOrder.poNumber=="*search-query*" or poLine.poLineNumber=="*search-query*" or poLine.vendorDetail.referenceNumbers=="*search-query*")
           and (poLine.locations=="*location-id*" or poLine.searchLocationIds=="*location-id*")
           and ((poLine.orderFormat=="Physical Resource" and (poLine.physical.materialType=="material-type"))))
-          sortby receiptDate/sort.ascending
+          sortby piece.receiptDate/sort.ascending
         `).replace(/\s+/g, ' ').trim(),
       },
       {
