@@ -9,3 +9,4 @@
 * [UICLAIM-5](https://folio-org.atlassian.net/browse/UICLAIM-5) Implement "Unreceivable" action.
 * [UICLAIM-8](https://folio-org.atlassian.net/browse/UICLAIM-8) Adjust permissions for claiming.
 * [UICLAIM-2](https://folio-org.atlassian.net/browse/UICLAIM-2) Implement "Group by organization" action.
+* [UICLAIM-11](https://folio-org.atlassian.net/browse/UICLAIM-11) Migrate `react-intl` to v7 and stripes dependencies to their Sunflower versions.
