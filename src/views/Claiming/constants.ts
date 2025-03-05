@@ -27,6 +27,7 @@ export const CLAIMING_LIST_SORTABLE_FIELDS = [
   CLAIMING_LIST_COLUMNS.chronology,
   CLAIMING_LIST_COLUMNS.enumeration,
   CLAIMING_HIDDEN_LIST_COLUMNS.vendorId,
+  CLAIMING_LIST_COLUMNS.title,
 ] as const;
 
 export const FILTERS = {

@@ -8,3 +8,5 @@ yarn.lock
 package-lock.json
 junit.xml
 output
+.stripesclirc
+stripes.config.js.local

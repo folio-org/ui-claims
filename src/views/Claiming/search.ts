@@ -100,6 +100,7 @@ export const buildClaimingQuery = (activeFilters: ActiveFilters, sorting: ACQ.So
     [CLAIMING_LIST_COLUMNS.displaySummary]: [`piece.${CLAIMING_LIST_COLUMNS.displaySummary}`],
     [CLAIMING_LIST_COLUMNS.chronology]: [`piece.${CLAIMING_LIST_COLUMNS.chronology}`],
     [CLAIMING_LIST_COLUMNS.enumeration]: [`piece.${CLAIMING_LIST_COLUMNS.enumeration}`],
+    [CLAIMING_LIST_COLUMNS.title]: [`title.${CLAIMING_LIST_COLUMNS.title}`],
   }) || 'sortby piece.receiptDate/sort.ascending';
 
   return connectQuery(filterQuery, sortingQuery);
