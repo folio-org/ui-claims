@@ -32,7 +32,7 @@
     "claiming.delayClaim.success.message": "Claims are successfully delayed.",
     "claiming.delayClaim.error.message": "Failure on delay claims.",
     "claiming.sendClaim.modal.message": "Claim <b>{count, number}</b> {count, plural, one {piece} other {pieces}}?",
-    "claiming.sendClaim.success.message": "Les réclamations sont actuellement en cours de traitement. Veuillez consulter Module d'Export  pour connaître l'état du travail.",
+    "claiming.sendClaim.success.message": "Claims are currently being processed. Please check Export manager for job status.",
     "claiming.sendClaim.error.message": "Failure on send claims.",
     "claiming.markUnreceivable.modal.heading": "Mark unreceivable",
     "claiming.markUnreceivable.modal.message": "Mark <b>{count, number}</b> {count, plural, one {piece} other {pieces}} unreceivable?",
@@ -52,7 +52,7 @@
     "claiming.filters.piece.metadata.updatedDate": "Date updated (Piece)",
     "claiming.filters.title.metadata.createdByUserId": "Created by (Title)",
     "claiming.filters.title.metadata.createdDate": "Date created (Title)",
-    "claiming.filters.title.metadata.updatedByUserId": "Updated by (Title)",
+    "claiming.filters.title.metadata.updatedByUserId": "Оновлено за (Назва)",
     "claiming.filters.title.metadata.updatedDate": "Date updated (Title)",
     "claiming.action.groupByOrganization": "Group by organization"
 }
