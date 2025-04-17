@@ -1,6 +1,8 @@
 # Change history for ui-claims
 
-## 1.1.0 (IN PROGRESS)
+## 2.0.0 (IN PROGRESS)
+
+* *BREAKING* Update `orders` and `order-lines` interfaces to `13.0` and `4.0` accordingly. Refs UICLAIM-19.
 
 ## [1.0.0](https://github.com/folio-org/ui-claims/tree/v1.0.0) (2025-03-12)
 
