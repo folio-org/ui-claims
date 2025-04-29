@@ -28,6 +28,8 @@ import type {
   ClaimingListColumnMapping,
 } from '../../types';
 
+import css from './ClaimingList.css';
+
 type Claim = ACQ.Claim;
 
 const nonInteractiveHeaders = difference(
@@ -102,6 +104,7 @@ const ClaimingList: React.FC<Props> = ({
         visibleColumns={visibleColumns as (keyof Claim)[]}
         columnMapping={columnMapping as unknown as Record<keyof Claim, React.ReactNode>}
         formatter={formatter as Record<keyof Claim, (item: Claim) => React.ReactNode>}
+        getCellClass={(defaultCellStyle) => `${defaultCellStyle} ${css.cellAlign}`}
         loading={isLoading}
         onNeedMoreData={onNeedMoreData}
         sortedColumn={sortingField}

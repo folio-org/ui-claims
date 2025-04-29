@@ -1,6 +1,11 @@
 # Change history for ui-claims
 
-## 1.0.0 (IN PROGRESS)
+## 2.0.0 (IN PROGRESS)
+
+* [UICLAIM-19](https://issues.folio.org/browse/UICLAIM-19) *BREAKING* Update `orders` and `order-lines` interfaces to `13.0` and `4.0` accordingly.
+* [STCOM-1439](https://issues.folio.org/browse/STCOM-1439) Align results MCL cells to the flex start.
+
+## [1.0.0](https://github.com/folio-org/ui-claims/tree/v1.0.0) (2025-03-12)
 
 * [UICLAIM-7](https://issues.folio.org/browse/UICLAIM-7) Setup new UI project `ui-claims`.
 * [UICLAIM-1](https://issues.folio.org/browse/UICLAIM-1) Implement UI interface for searching claims: filters and results list.

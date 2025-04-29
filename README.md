@@ -35,7 +35,7 @@ stripes serve --okapi http://my-okapi.example.com:9130 --tenant my-tenant-id
 
 Run the included UI tests with the following command:
 ```
-stripes test karma
+stripes test
 ```
 
 ## Additional information
