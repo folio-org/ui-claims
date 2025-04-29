@@ -2,7 +2,8 @@
 
 ## 2.0.0 (IN PROGRESS)
 
-* *BREAKING* Update `orders` and `order-lines` interfaces to `13.0` and `4.0` accordingly. Refs UICLAIM-19.
+* [UICLAIM-19](https://issues.folio.org/browse/UICLAIM-19) *BREAKING* Update `orders` and `order-lines` interfaces to `13.0` and `4.0` accordingly.
+* [STCOM-1439](https://issues.folio.org/browse/STCOM-1439) Align results MCL cells to the flex start.
 
 ## [1.0.0](https://github.com/folio-org/ui-claims/tree/v1.0.0) (2025-03-12)
 
