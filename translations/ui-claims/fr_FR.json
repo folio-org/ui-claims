@@ -3,7 +3,7 @@
     "permission.claiming.view": "Claims: View claims",
     "document.title.search": "Claiming - {query} - Search",
     "appMenu.claimingAppSearch": "Claiming app Search",
-    "search.index.keyword": "Keyword",
+    "search.index.keyword": "Mot-clé",
     "search.index.poLine.titleOrPackage": "Package (POL Package name)",
     "search.index.purchaseOrder.poNumber": "PO number",
     "search.index.poLine.poLineNumber": "POL number",
