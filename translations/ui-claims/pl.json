@@ -11,7 +11,7 @@
     "claiming.results.title": "Monity",
     "claiming.results.columns.select": "Zaznacz monit ${term}",
     "claiming.results.columns.selectAll": "Zaznacz wszystkie monity",
-    "claiming.results.columns.receiptDate": "Oczekiwana data",
+    "claiming.results.columns.receiptDate": "Przewidywana data",
     "claiming.results.columns.vendorCode": "Kod organizacji",
     "claiming.results.columns.vendorName": "Nazwa organizacji",
     "claiming.results.columns.title": "Tytuł",
