@@ -30,7 +30,7 @@
     "claiming.filters.poLine.physical.receiptDue": "Termin odbioru",
     "claiming.filters.purchaseOrder.shipTo": "Dostawa do",
     "claiming.delayClaim.success.message": "Monity zostały pomyślnie opóźnione.",
-    "claiming.delayClaim.error.message": "Failure on delay claims.",
+    "claiming.delayClaim.error.message": "Błąd przy obsłudze monitów opóźnionych.",
     "claiming.sendClaim.modal.message": "Monit <b>{count, number}</b> {count, plural, one {część} other {części}}?",
     "claiming.sendClaim.success.message": "Monity są obecnie przetwarzane. Sprawdź status zadania w Export manager.",
     "claiming.sendClaim.error.message": "Nie udało sie wysłać monitów.",
