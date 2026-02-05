@@ -45,7 +45,7 @@
     "claiming.filters.title.materialType": "Rodzaj materiału",
     "claiming.filters.piece.receivingStatus": "Status odbioru",
     "claiming.filters.piece.receivedDate": "Data odbioru",
-    "claiming.filters.piece.receiptDate": "Przewidywana data odbioru",
+    "claiming.filters.piece.receiptDate": "Przewidywana data przyjęcia",
     "claiming.filters.piece.metadata.createdByUserId": "Utworzone przez (Część)",
     "claiming.filters.piece.metadata.createdDate": "Data utworzenia (Część)",
     "claiming.filters.piece.metadata.updatedByUserId": "Zaktualizowane przez (Część)",

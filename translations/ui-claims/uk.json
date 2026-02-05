@@ -46,13 +46,13 @@
     "claiming.filters.piece.receivingStatus": "Статус отримання",
     "claiming.filters.piece.receivedDate": "Дата отримання",
     "claiming.filters.piece.receiptDate": "Очікувана дата квитанції",
-    "claiming.filters.piece.metadata.createdByUserId": "Створено (частина примірників назви)",
+    "claiming.filters.piece.metadata.createdByUserId": "Створено (ким) - Частина примірників назви",
     "claiming.filters.piece.metadata.createdDate": "Дата створення (частина примірників назви)",
-    "claiming.filters.piece.metadata.updatedByUserId": "Оновлено (частина примірників назви)",
+    "claiming.filters.piece.metadata.updatedByUserId": "Оновлено (ким) (частина примірників назви)",
     "claiming.filters.piece.metadata.updatedDate": "Дата оновлення (частина примірників назви)",
-    "claiming.filters.title.metadata.createdByUserId": "Створено за (Назва)",
+    "claiming.filters.title.metadata.createdByUserId": "Створено (ким) - Назва",
     "claiming.filters.title.metadata.createdDate": "Дата створення (Назва)",
-    "claiming.filters.title.metadata.updatedByUserId": "Оновлено за (Назва)",
+    "claiming.filters.title.metadata.updatedByUserId": "Оновлено (ким) (Назва)",
     "claiming.filters.title.metadata.updatedDate": "Дата оновлення (Назва)",
     "claiming.action.groupByOrganization": "Групувати за організацією"
 }
