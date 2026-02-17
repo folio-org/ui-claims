@@ -1,5 +1,5 @@
 {
-    "meta.title": "Claiming",
+    "meta.title": "클레임 (Claiming)",
     "permission.claiming.view": "Claims: View claims",
     "document.title.search": "Claiming - {query} - Search",
     "appMenu.claimingAppSearch": "Claiming app Search",
@@ -12,8 +12,8 @@
     "claiming.results.columns.select": "Select claim ${term}",
     "claiming.results.columns.selectAll": "Select all claims",
     "claiming.results.columns.receiptDate": "Expected date",
-    "claiming.results.columns.vendorCode": "Organization code",
-    "claiming.results.columns.vendorName": "Organization name",
+    "claiming.results.columns.vendorCode": "공급사 코드",
+    "claiming.results.columns.vendorName": "공급사 이름",
     "claiming.results.columns.title": "Title",
     "claiming.results.columns.displaySummary": "Display summary",
     "claiming.results.columns.chronology": "Chronology",
