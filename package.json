@@ -108,8 +108,7 @@
         "permissionName": "module.claims.enabled",
         "displayName": "UI: Claims module is enabled",
         "subPermissions": [
-          "mod-settings.entries.collection.get",
-          "mod-settings.global.read.stripes-core.prefs.manage"
+          "stripes-core.settings.read"
         ]
       },
       {
