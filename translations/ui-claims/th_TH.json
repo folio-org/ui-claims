@@ -19,7 +19,7 @@
     "claiming.results.columns.chronology": "Chronology",
     "claiming.results.columns.enumeration": "Enumeration",
     "claiming.results.columns.poLineNumber": "POL number",
-    "claiming.results.columns.receivingStatus": "Status",
+    "claiming.results.columns.receivingStatus": "สถานะ",
     "claiming.results.columns.piecesToClaim": "Pieces to claim",
     "claiming.filters.purchaseOrder.vendor": "Vendor",
     "claiming.filters.purchaseOrder.orderType": "Order type",
