@@ -1,6 +1,8 @@
 {
   "meta.title": "Claiming",
 
+  "poc.notifications-center": "Notifications center",
+
   "document.title.search": "Claiming - {query} - Search",
 
   "appMenu.claimingAppSearch": "Claiming app Search",

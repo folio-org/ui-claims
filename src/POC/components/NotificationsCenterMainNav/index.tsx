@@ -1,0 +1,2 @@
+export { NotificationsCenterMainNavContainer as NotificationsCenterMainNav } from './NotificationsCenterMainNavContainer';
+export { NotificationsCenterMainNav as NotificationsCenterMainNavContent } from './NotificationsCenterMainNav';
