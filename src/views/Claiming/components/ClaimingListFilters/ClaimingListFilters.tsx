@@ -123,15 +123,6 @@ const ClaimingListFilters: React.FC<Props> = ({
         onChange={adaptedApplyFilters}
       />
 
-      <BooleanFilter
-        id={`filter-${FILTERS.POL_CLAIMING_ACTIVE}`}
-        activeFilters={activeFilters[FILTERS.POL_CLAIMING_ACTIVE]}
-        disabled={disabled}
-        labelId={`ui-claims.claiming.filters.${FILTERS.POL_CLAIMING_ACTIVE}`}
-        name={FILTERS.POL_CLAIMING_ACTIVE}
-        onChange={adaptedApplyFilters}
-      />
-
       <AcqCheckboxFilter
         id={`filter-${FILTERS.RECEIVING_STATUS}`}
         activeFilters={activeFilters[FILTERS.RECEIVING_STATUS]}
