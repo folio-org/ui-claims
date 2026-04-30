@@ -2,6 +2,11 @@
 
 ## 2.1.0 (IN PROGRESS)
 
+## [2.0.1](https://github.com/folio-org/ui-claims/tree/v2.0.1) (2026-04-30)
+[Full Changelog](https://github.com/folio-org/ui-claims/compare/v2.0.0...v2.0.1)
+
+* Update `stripes` version to `^10.1.3` in `package.json`.
+
 ## [2.0.0](https://github.com/folio-org/ui-claims/tree/v2.0.0) (2026-04-17)
 [Full Changelog](https://github.com/folio-org/ui-claims/compare/v1.0.0...v2.0.0)
 
