@@ -32,7 +32,6 @@
   "claiming.filters.title.materialType": "Material type",
   "claiming.filters.poLine.orderFormat": "Order format",
   "claiming.filters.poLine.locations": "Location",
-  "claiming.filters.poLine.claimingActive": "POL claim active",
   "claiming.filters.piece.receivingStatus": "Receiving status",
   "claiming.filters.poLine.rush": "Rush",
   "claiming.filters.piece.receivedDate": "Received date",

@@ -2,6 +2,8 @@
 
 ## 2.1.0 (IN PROGRESS)
 
+* [UICLAIM-29](https://issues.folio.org/browse/UICLAIM-29) Remove "POL claim active" filter from claiming results filters pane.
+
 ## [2.0.1](https://github.com/folio-org/ui-claims/tree/v2.0.1) (2026-04-30)
 [Full Changelog](https://github.com/folio-org/ui-claims/compare/v2.0.0...v2.0.1)
 

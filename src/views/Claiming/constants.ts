@@ -37,7 +37,6 @@ export const FILTERS = {
   ORDER_FORMAT: 'poLine.orderFormat',
   POL_TAGS: 'poLine.tags.tagList',
   LOCATION: 'poLine.locations',
-  POL_CLAIMING_ACTIVE: 'poLine.claimingActive',
   RECEIVING_STATUS: 'piece.receivingStatus',
   ACQUISITIONS_UNIT: 'purchaseOrder.acqUnitIds',
   RUSH: 'poLine.rush',
