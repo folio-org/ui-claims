@@ -25,7 +25,6 @@
     "claiming.filters.purchaseOrder.orderType": "Тип замовлення",
     "claiming.filters.poLine.orderFormat": "Формат замовлення",
     "claiming.filters.poLine.locations": "Місце розміщення",
-    "claiming.filters.poLine.claimingActive": "Скарга рядка замовлення на придбання активна",
     "claiming.filters.poLine.rush": "Терміново",
     "claiming.filters.poLine.physical.receiptDue": "Термін отримання",
     "claiming.filters.purchaseOrder.shipTo": "Відправити до",

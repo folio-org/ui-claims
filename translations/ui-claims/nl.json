@@ -25,7 +25,6 @@
     "claiming.filters.purchaseOrder.orderType": "Soort bestelling",
     "claiming.filters.poLine.orderFormat": "Bestelformat",
     "claiming.filters.poLine.locations": "Locatie",
-    "claiming.filters.poLine.claimingActive": "RPO-claim actief",
     "claiming.filters.poLine.rush": "Rush",
     "claiming.filters.poLine.physical.receiptDue": "Ontvangst verschuldigd",
     "claiming.filters.purchaseOrder.shipTo": "Verzenden naar",

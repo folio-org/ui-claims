@@ -25,7 +25,6 @@
     "claiming.filters.purchaseOrder.orderType": "訂單類型",
     "claiming.filters.poLine.orderFormat": "訂單格式",
     "claiming.filters.poLine.locations": "館藏地",
-    "claiming.filters.poLine.claimingActive": "POL claim active",
     "claiming.filters.poLine.rush": "急件",
     "claiming.filters.poLine.physical.receiptDue": "Receipt due",
     "claiming.filters.purchaseOrder.shipTo": "Ship to",

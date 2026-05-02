@@ -25,7 +25,6 @@
     "claiming.filters.purchaseOrder.orderType": "Order type",
     "claiming.filters.poLine.orderFormat": "Order format",
     "claiming.filters.poLine.locations": "Location",
-    "claiming.filters.poLine.claimingActive": "POL claim active",
     "claiming.filters.poLine.rush": "Rush",
     "claiming.filters.poLine.physical.receiptDue": "Receipt due",
     "claiming.filters.purchaseOrder.shipTo": "Ship to",
