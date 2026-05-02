@@ -25,7 +25,6 @@
     "claiming.filters.purchaseOrder.orderType": "نوع أمر الشراء",
     "claiming.filters.poLine.orderFormat": "تنسيق أمر الشراء",
     "claiming.filters.poLine.locations": "الموقع",
-    "claiming.filters.poLine.claimingActive": "مطالبة سطر أمر الشراء نشطة",
     "claiming.filters.poLine.rush": "تسارع",
     "claiming.filters.poLine.physical.receiptDue": "الاستلام مستحق",
     "claiming.filters.purchaseOrder.shipTo": "شحن إلى",

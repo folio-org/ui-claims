@@ -25,7 +25,6 @@
     "claiming.filters.purchaseOrder.orderType": "Typ zamówienia",
     "claiming.filters.poLine.orderFormat": "Format zamówienia",
     "claiming.filters.poLine.locations": "Lokalizacja",
-    "claiming.filters.poLine.claimingActive": "Monit jest aktywny dla pozycji zamówienia",
     "claiming.filters.poLine.rush": "Pilne",
     "claiming.filters.poLine.physical.receiptDue": "Termin odbioru",
     "claiming.filters.purchaseOrder.shipTo": "Dostawa do",

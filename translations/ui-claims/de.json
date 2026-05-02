@@ -25,7 +25,6 @@
     "claiming.filters.purchaseOrder.orderType": "Bestellungstyp",
     "claiming.filters.poLine.orderFormat": "Bestellungsformat",
     "claiming.filters.poLine.locations": "Standort",
-    "claiming.filters.poLine.claimingActive": "Bestellpostenanspruch aktiv",
     "claiming.filters.poLine.rush": "Eilt",
     "claiming.filters.poLine.physical.receiptDue": "Eingang fällig",
     "claiming.filters.purchaseOrder.shipTo": "Lieferadresse",

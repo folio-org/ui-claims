@@ -25,7 +25,6 @@
     "claiming.filters.purchaseOrder.orderType": "Tipo de pedido",
     "claiming.filters.poLine.orderFormat": "Formato do pedido",
     "claiming.filters.poLine.locations": "Localização",
-    "claiming.filters.poLine.claimingActive": "Reclamação da linha do pedido de compra ativa",
     "claiming.filters.poLine.rush": "Urgente",
     "claiming.filters.poLine.physical.receiptDue": "Recebimento esperado",
     "claiming.filters.purchaseOrder.shipTo": "Enviar para",
