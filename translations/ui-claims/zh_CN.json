@@ -25,7 +25,6 @@
     "claiming.filters.purchaseOrder.orderType": "订购类型",
     "claiming.filters.poLine.orderFormat": "订单格式",
     "claiming.filters.poLine.locations": "馆藏地",
-    "claiming.filters.poLine.claimingActive": "订单行催缺激活",
     "claiming.filters.poLine.rush": "忙碌",
     "claiming.filters.poLine.physical.receiptDue": "接收到期",
     "claiming.filters.purchaseOrder.shipTo": "运送到",

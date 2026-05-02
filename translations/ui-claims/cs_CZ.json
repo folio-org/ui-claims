@@ -25,7 +25,6 @@
     "claiming.filters.purchaseOrder.orderType": "Typ objednávky",
     "claiming.filters.poLine.orderFormat": "Formát objednávky",
     "claiming.filters.poLine.locations": "Lokace",
-    "claiming.filters.poLine.claimingActive": "Aktivní ŘNO reklamace",
     "claiming.filters.poLine.rush": "Spěch",
     "claiming.filters.poLine.physical.receiptDue": "Splatný příjem",
     "claiming.filters.purchaseOrder.shipTo": "Odeslat do",

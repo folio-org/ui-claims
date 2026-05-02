@@ -25,7 +25,6 @@
     "claiming.filters.purchaseOrder.orderType": "Sipariş türü",
     "claiming.filters.poLine.orderFormat": "Sipariş formatı",
     "claiming.filters.poLine.locations": "Konum",
-    "claiming.filters.poLine.claimingActive": "Satın alma kalemi talebi aktif",
     "claiming.filters.poLine.rush": "Rush",
     "claiming.filters.poLine.physical.receiptDue": "Vadesi gelen makbuz",
     "claiming.filters.purchaseOrder.shipTo": "Gönderilecek",
