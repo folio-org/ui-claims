@@ -23,7 +23,17 @@ import {
 import { CLAIMING_ROUTE } from './constants';
 import { RootRoutes } from './RootRoutes';
 
-const Root: React.FC = () => {
+import {
+  checkNotificationsVisibility,
+  renderNotificationsCenter,
+} from './POC/utils';
+
+type RootComponent = React.FC & {
+  checkNotificationsVisibility: typeof checkNotificationsVisibility;
+  renderNotificationsCenter: typeof renderNotificationsCenter;
+};
+
+const Root: RootComponent = () => {
   const [isOpen, toggleModal] = useModalToggle();
 
   const focusSearchField = (): void => {
@@ -95,5 +105,8 @@ const Root: React.FC = () => {
     </>
   );
 };
+
+Root.checkNotificationsVisibility = checkNotificationsVisibility;
+Root.renderNotificationsCenter = renderNotificationsCenter;
 
 export default Root;

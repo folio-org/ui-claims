@@ -75,6 +75,16 @@
     ],
     "displayName": "ui-claims.meta.title",
     "route": "/claiming",
+    "links": {
+      "mainNavigation": [
+        {
+          "render": "renderNotificationsCenter",
+          "icon": "flag",
+          "caption": "ui-claims.poc.notifications-center",
+          "check": "checkNotificationsVisibility"
+        }
+      ]
+    },
     "icons": [
       {
         "name": "app",
