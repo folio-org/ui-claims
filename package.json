@@ -1,6 +1,6 @@
 {
   "name": "@folio/claims",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "UI module for claiming",
   "main": "src/index.tsx",
   "repository": "",
