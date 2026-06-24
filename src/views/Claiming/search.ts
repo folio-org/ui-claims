@@ -3,11 +3,12 @@ import flatten from 'lodash/flatten';
 
 import {
   ALL_RECORDS_CQL,
-  buildArrayFieldQuery,
   buildDateRangeQuery,
   buildFilterQuery,
+  buildMultiOptionCqlQuery,
   buildSortingQuery,
   connectQuery,
+  CQLBuilder,
 } from '@folio/stripes-acq-components';
 
 import {
@@ -18,25 +19,55 @@ import {
 
 import type { ActiveFilters } from './types';
 
-export const CLAIMING_SEARCHABLE_INDICES = [
-  'title.title',
-  'poLine.titleOrPackage',
-  'title.productIds',
-  'purchaseOrder.poNumber',
-  'poLine.poLineNumber',
-  'poLine.vendorDetail.referenceNumbers',
-];
+const buildLocationsQuery = (filterValue: ACQ.FilterValue) => {
+  return [
+    buildMultiOptionCqlQuery(FILTERS.LOCATION, filterValue, { modifiers: [{ name: '@locationId' }] }),
+    buildMultiOptionCqlQuery('poLine.searchLocations', filterValue),
+  ].join(` ${CQLBuilder.OPERATORS.OR} `);
+};
+
+const buildEqualQuery = (sIndex: string, sQuery: string) => new CQLBuilder().equal(sIndex, sQuery).build();
+
+export const CLAIMING_SEARCHABLE_INDICES_DICT = {
+  TITLE: 'title.title',
+  PO_LINE_TITLE_OR_PACKAGE: 'poLine.titleOrPackage',
+  PRODUCT_IDS: 'title.productIds',
+  PO_NUMBER: 'purchaseOrder.poNumber',
+  PO_LINE_NUMBER: 'poLine.poLineNumber',
+  REFERENCE_NUMBERS: 'poLine.vendorDetail.referenceNumbers',
+};
+
+export const CLAIMING_SEARCHABLE_INDICES = Object.values(CLAIMING_SEARCHABLE_INDICES_DICT);
+
+const formatSearchCqlMap = {
+  [CLAIMING_SEARCHABLE_INDICES_DICT.PO_LINE_NUMBER]: buildEqualQuery,
+  [CLAIMING_SEARCHABLE_INDICES_DICT.PO_NUMBER]: buildEqualQuery,
+};
+
+const formatSearchCql = (sIndex: string, sQuery: string) => {
+  const formatCqlFn = formatSearchCqlMap[sIndex];
+
+  return formatCqlFn
+    ? formatCqlFn(sIndex, sQuery)
+    : new CQLBuilder().fuzzy(sIndex, sQuery).build();
+};
 
 export const getKeywordQuery = (query: string): string => CLAIMING_SEARCHABLE_INDICES.reduce(
   (acc, sIndex) => {
-    if (acc) {
-      return `${acc} or ${sIndex}=="*${query}*"`;
-    } else {
-      return `${sIndex}=="*${query}*"`;
-    }
+    const formattedQuery = formatSearchCql(sIndex, query);
+
+    return acc ? `${acc} or ${formattedQuery}` : formattedQuery;
   },
   '',
 );
+
+const getSearchQuery = (sQuery: string, qIndex?: string) => {
+  if (qIndex) {
+    return formatSearchCql(qIndex, sQuery);
+  }
+
+  return getKeywordQuery(sQuery);
+};
 
 export const buildClaimingQuery = (activeFilters: ActiveFilters, sorting: ACQ.Sorting): string => {
   const filters = { ...activeFilters };
@@ -74,13 +105,7 @@ export const buildClaimingQuery = (activeFilters: ActiveFilters, sorting: ACQ.So
 
   const filtersFilterQuery = buildFilterQuery(
     filters,
-    (query: string, qindex?: string) => {
-      if (qindex) {
-        return `(${qindex}==*${query}*)`;
-      }
-
-      return getKeywordQuery(query);
-    },
+    getSearchQuery,
     {
       [FILTERS.TITLE_DATE_CREATED]: buildDateRangeQuery.bind(null, [FILTERS.TITLE_DATE_CREATED]),
       [FILTERS.TITLE_DATE_UPDATED]: buildDateRangeQuery.bind(null, [FILTERS.TITLE_DATE_UPDATED]),
@@ -89,13 +114,9 @@ export const buildClaimingQuery = (activeFilters: ActiveFilters, sorting: ACQ.So
       [FILTERS.EXPECTED_RECEIPT_DATE]: buildDateRangeQuery.bind(null, [FILTERS.EXPECTED_RECEIPT_DATE]),
       [FILTERS.RECEIVED_DATE]: buildDateRangeQuery.bind(null, [FILTERS.RECEIVED_DATE]),
       [FILTERS.RECEIPT_DUE]: buildDateRangeQuery.bind(null, [FILTERS.RECEIPT_DUE]),
-      [FILTERS.LOCATION]: (filterValue: ACQ.FilterValue) => `(${
-        [FILTERS.LOCATION, 'poLine.searchLocationIds']
-          .map((filterKey) => buildArrayFieldQuery(filterKey, filterValue))
-          .join(' or ')
-      })`,
-      [FILTERS.POL_TAGS]: buildArrayFieldQuery.bind(null, [FILTERS.POL_TAGS]),
-      [FILTERS.ACQUISITIONS_UNIT]: buildArrayFieldQuery.bind(null, [FILTERS.ACQUISITIONS_UNIT]),
+      [FILTERS.LOCATION]: (filterValue: ACQ.FilterValue) => buildLocationsQuery(filterValue),
+      [FILTERS.POL_TAGS]: buildMultiOptionCqlQuery.bind(null, FILTERS.POL_TAGS),
+      [FILTERS.ACQUISITIONS_UNIT]: buildMultiOptionCqlQuery.bind(null, FILTERS.ACQUISITIONS_UNIT),
     },
   );
 
