@@ -20,10 +20,12 @@ import {
 import type { ActiveFilters } from './types';
 
 const buildLocationsQuery = (filterValue: ACQ.FilterValue) => {
-  return [
+  const query = [
     buildMultiOptionCqlQuery(FILTERS.LOCATION, filterValue, { modifiers: [{ name: '@locationId' }] }),
     buildMultiOptionCqlQuery('poLine.searchLocations', filterValue),
   ].join(` ${CQLBuilder.OPERATORS.OR} `);
+
+  return `(${query})`;
 };
 
 const buildEqualQuery = (sIndex: string, sQuery: string) => new CQLBuilder().equal(sIndex, sQuery).build();
