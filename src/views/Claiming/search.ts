@@ -3,6 +3,7 @@ import flatten from 'lodash/flatten';
 
 import {
   ALL_RECORDS_CQL,
+  buildArrayFieldQuery,
   buildDateRangeQuery,
   buildFilterQuery,
   buildMultiOptionCqlQuery,
@@ -20,10 +21,9 @@ import {
 import type { ActiveFilters } from './types';
 
 const buildLocationsQuery = (filterValue: ACQ.FilterValue) => {
-  const query = [
-    buildMultiOptionCqlQuery(FILTERS.LOCATION, filterValue, { modifiers: [{ name: '@locationId' }] }),
-    buildMultiOptionCqlQuery('poLine.searchLocations', filterValue),
-  ].join(` ${CQLBuilder.OPERATORS.OR} `);
+  const query = [FILTERS.LOCATION, 'poLine.searchLocationIds']
+    .map((filterKey) => buildArrayFieldQuery(filterKey, filterValue))
+    .join(` ${CQLBuilder.OPERATORS.OR} `);
 
   return `(${query})`;
 };
