@@ -1,5 +1,6 @@
 import { renderHook } from '@folio/jest-config-stripes/testing-library/react';
 import {
+  CQLBuilder,
   ORDER_FORMATS,
   SEARCH_PARAMETER,
 } from '@folio/stripes-acq-components';
@@ -13,6 +14,21 @@ jest.mock('../../../../hooks', () => ({
 }));
 
 const mockUseClaims = useClaims as jest.Mock;
+
+const {
+  AND,
+  EQUAL,
+  FUZZY,
+  OR,
+} = CQLBuilder.OPERATORS;
+const LOWER_AND = AND.toLocaleLowerCase();
+const LOWER_OR = OR.toLocaleLowerCase();
+
+const group = (query: string | string[], joiner = ` ${LOWER_AND} `) => {
+  return Array.isArray(query)
+    ? `(${query.join(joiner)})`
+    : `(${query})`;
+};
 
 describe('useClaiming', () => {
   beforeEach(() => {
@@ -70,12 +86,29 @@ describe('useClaiming', () => {
       {
         limit: options.pagination.limit,
         offset: options.pagination.offset,
-        query: (`
-          ((title.title=="*search-query*" or poLine.titleOrPackage=="*search-query*" or title.productIds=="*search-query*" or purchaseOrder.poNumber=="*search-query*" or poLine.poLineNumber=="*search-query*" or poLine.vendorDetail.referenceNumbers=="*search-query*")
-          and (poLine.locations=="*location-id*" or poLine.searchLocationIds=="*location-id*")
-          and ((poLine.orderFormat=="Physical Resource" and (poLine.physical.materialType=="material-type"))))
-          sortby piece.receiptDate/sort.ascending
-        `).replace(/\s+/g, ' ').trim(),
+        query: [
+          group([
+            group([
+              `title.title${FUZZY}"search-query"`,
+              `poLine.titleOrPackage${FUZZY}"search-query"`,
+              `title.productIds${FUZZY}"search-query"`,
+              `purchaseOrder.poNumber${EQUAL}"search-query"`,
+              `poLine.poLineNumber${EQUAL}"search-query"`,
+              `poLine.vendorDetail.referenceNumbers${FUZZY}"search-query"`,
+            ], ` ${LOWER_OR} `),
+            group([
+              `poLine.locations${EQUAL}"*location-id*"`,
+              `poLine.searchLocationIds${EQUAL}"*location-id*"`,
+            ], ` ${OR} `),
+            group(
+              group([
+                `poLine.orderFormat${EQUAL}"Physical Resource"`,
+                group(`poLine.physical.materialType${EQUAL}"material-type"`),
+              ]),
+            ),
+          ].join(` ${LOWER_AND} `)),
+          'sortby piece.receiptDate/sort.ascending',
+        ].join(' '),
       },
       {
         breakWithDefaults: false,

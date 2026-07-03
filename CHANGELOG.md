@@ -1,6 +1,8 @@
 # Change history for ui-claims
 
-## 2.1.0 (IN PROGRESS)
+## 3.0.0 (IN PROGRESS)
+
+* [UICLAIM-31](https://folio-org.atlassian.net/browse/UICLAIM-31) *BREAKING* Update CQL queries to use the new indices.
 
 ## [2.0.2](https://github.com/folio-org/ui-claims/tree/v2.0.2) (2026-05-06)
 [Full Changelog](https://github.com/folio-org/ui-claims/compare/v2.0.1...v2.0.2)
