@@ -8,7 +8,7 @@ import type { ActiveFilters } from '../../types';
 interface Options {
   filters: ActiveFilters & { query?: string };
   sorting: ACQ.Sorting;
-  pagination: ACQ.Pagination;
+  pagination: ACQ.Pagination & { timestamp?: number };
   tenantId?: string;
 }
 
@@ -32,6 +32,7 @@ export const useClaiming = ({
       breakWithDefaults: !filtersCount,
       keepPreviousData: true,
       tenantId,
+      queryKey: [pagination.timestamp],
     },
   );
 
