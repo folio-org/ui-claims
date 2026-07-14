@@ -30,6 +30,8 @@ const group = (query: string | string[], joiner = ` ${LOWER_AND} `) => {
     : `(${query})`;
 };
 
+const timestamp = Date.now();
+
 describe('useClaiming', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -43,7 +45,11 @@ describe('useClaiming', () => {
         sorting: 'receiptDate',
         sortingDirection: 'ascending' as ACQ.SortingOrder,
       },
-      pagination: { limit: 10, offset: 0 },
+      pagination: {
+        limit: 10,
+        offset: 0,
+        timestamp,
+      },
       tenantId: 'tenantId',
     };
 
@@ -59,6 +65,7 @@ describe('useClaiming', () => {
       {
         breakWithDefaults: true,
         keepPreviousData: true,
+        queryKey: [timestamp],
         tenantId: options.tenantId,
       },
     );
@@ -76,7 +83,7 @@ describe('useClaiming', () => {
         sorting: 'receiptDate',
         sortingDirection: 'ascending' as ACQ.SortingOrder,
       },
-      pagination: { limit: 10, offset: 0 },
+      pagination: { limit: 10, offset: 0, timestamp },
       tenantId: 'tenantId',
     };
 
@@ -113,6 +120,7 @@ describe('useClaiming', () => {
       {
         breakWithDefaults: false,
         keepPreviousData: true,
+        queryKey: [timestamp],
         tenantId: options.tenantId,
       },
     );
