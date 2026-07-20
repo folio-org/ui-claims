@@ -63,7 +63,7 @@ export const useClaims = (params: Params = {}, options: Options = {}): ReturnDat
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: [namespace, queryKey, query, offset, limit, tenantId, breakWithDefaults],
+    queryKey: [namespace, queryKey, offset, limit, tenantId, breakWithDefaults],
     queryFn: async ({ signal }) => {
       if (breakWithDefaults) {
         return {
