@@ -34,8 +34,8 @@ export const fetchClaims = (httpClient: HTTPClient) => async (options: HTTPClien
       return {
         ...piece,
         title: title.title,
-        vendorCode: vendor.code,
-        vendorName: vendor.name,
+        vendorCode: vendor?.code,
+        vendorName: vendor?.name,
         poLineNumber: poLine.poLineNumber,
       };
     }),
